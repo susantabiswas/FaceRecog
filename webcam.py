@@ -1,46 +1,41 @@
 # for taking images from webcam
 import cv2
 
-save_loc = r'save_image/1.jpg'
-cap = cv2.VideoCapture(0)
-cap.set(3, 640)  # WIDTH
-cap.set(4, 480)  # HEIGHT
+save_loc = r'saved_image/1.jpg'
+capture_obj = cv2.Videocapture_objture(0)
+capture_obj.set(3, 640)  # WIDTH
+capture_obj.set(4, 480)  # HEIGHT
 
 face_cascade = cv2.CascadeClassifier(r'haarcascades/haarcascade_frontalface_default.xml')
-eye_cascade = cv2.CascadeClassifier(r'haarcascades/haarcascade_eye.xml')
+
 
 while(True):
-    # Capture frame-by-frame
-    ret, frame = cap.read()
-    frame = cv2.flip(frame,1,0)
-    
+    # capture_object frame-by-frame
+    ret, frame = capture_obj.read()
+    # mirror the frame
+    frame = cv2.flip(frame, 1, 0)
+
     # Our operations on the frame come here
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    # detect face
     faces = face_cascade.detectMultiScale(gray, 1.3, 5)
-    print(len(faces))
     
     # Display the resulting frame
     for (x, y, w, h) in faces:
+        # required region for the face
         roi_color = frame[y-90:y+h+70, x-50:x+w+50]
         # save the detected face
         cv2.imwrite(save_loc, roi_color)
+        # draw a rectangle bounding the face
         cv2.rectangle(frame, (x-40, y-70), (x+w+20, y+h+40), (255, 0, 0), 2)
-        
-        
-        roi_gray = gray[y:y+h, x:x+w]
-        
-        
-        
-        eyes = eye_cascade.detectMultiScale(roi_gray)
-        for (ex, ey, ew, eh) in eyes:
-            cv2.rectangle(roi_color, (ex, ey), (ex+ew, ey+eh), (0, 255, 0), 2)
-            
-            
+
+    # display the frame with bounding rectangle    
     cv2.imshow('frame', frame)
-    
+
+    # close the webcam when 'q' is pressed
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-# When everything done, release the capture
-cap.release()
+# When everything done, release the capture_objture
+capture_obj.release()
 cv2.destroyAllWindows()
