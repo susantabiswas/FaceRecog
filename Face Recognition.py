@@ -16,7 +16,10 @@ from keras.initializers import glorot_uniform
 from keras.engine.topology import Layer
 from keras import backend as K
 K.set_image_data_format('channels_first')
+
+import pickle
 import cv2
+import os.path
 import os
 import numpy as np
 from numpy import genfromtxt
@@ -24,8 +27,7 @@ import pandas as pd
 import tensorflow as tf
 from utility import *
 from inception_blocks_v2 import *
-from webcam_utils import *
-import os
+from webcam_utility import *
 np.set_printoptions(threshold=np.nan)
 
 
@@ -71,35 +73,74 @@ def load_model_weights(FRmodel):
     load_weights_from_FaceNet(FRmodel)
     return FRmodel
 
-# ### User Database
-# We will create a databse of registered. For this we will use a simple dictionary and map each registered user with his/her face encoding.
+# We will create a database of registered. For this we will use a simple dictionary and map each registered user with his/her face encoding.
 # initialize the user database
 def ini_user_database():
-    # we use a dict for keeping track of mapping of each person with his/her face encoding
-    user_db = {}
+    # check for existing database
+    if os.path.exists('database/user_dict.pickle'):
+        with open('database/user_dict.pickle', 'rb') as handle:
+            user_db = pickle.load(handle)
+    else:
+        # make a new one
+        # we use a dict for keeping track of mapping of each person with his/her face encoding
+        user_db = {}
+
     return user_db
 
-# ### Add user Here
-# add a user
+
+# adds a new user face to the database using his/her image stored on disk using the image path
 def add_user_img_path(user_db, FRmodel, name, img_path):
-    user_db[name] = img_to_encoding(img_path, FRmodel)
-    print('User ' + name + ' added successfully')
+    if name not in user_db:
+        user_db[name] = img_to_encoding(img_path, FRmodel)
+        # save the database
+        with open('database/user_dict.pickle', 'wb') as handle:
+                pickle.dump(user_db, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        print('User ' + name + ' added successfully')
+    else:
+        print('The name is already registered! Try a different name.........')
     
+
+# adds a new user using image taken from webcam
+def add_user_webcam(user_db, FRmodel, name):
+    # we can use the webcam to capture the user image then get it recognized
+    face_found = detect_face(user_db, FRmodel)
+
+    if face_found:
+        resize_img("saved_image/1.jpg")
+        if name not in user_db:
+            add_user_img_path(user_db, FRmodel, name, "saved_image/1.jpg")
+        else:
+            print('The name is already registered! Try a different name.........')
+    else:
+        print('There was no face found in the visible frame. Try again...........')
+
+
+# deletes a registered user from database
+def delete_user(user_db, name):
+    popped = user_db.pop(name, None)
+
+    if popped is not None:
+        print('User ' + name + ' deleted successfully')
+        # save the database
+        with open('database/user_dict.pickle', 'wb') as handle:
+                pickle.dump(user_db, handle, protocol=pickle.HIGHEST_PROTOCOL)
+    elif popped == None:
+        print('No such user !!')
 
 
 # ### Putting everything together
-# For making this face recognition system we are going to take the input image, find its encoding and then see if there is any similar encoding in the database or not. We define a threshold value to decide whether the two images are similar or not based on the similarity of their encodings.
-# recognize the user face by checking for it in the database
-def recognize_face(image_path, database, model):
+# For making this face recognition system we are going to take the input image, find its encoding and then 
+# see if there is any similar encoding in the database or not. We define a threshold value to decide whether the two images are similar 
+# or not based on the similarity of their encodings.
+def find_face(image_path, database, model, threshold=0.6):
     # find the face encodings for the input image
     encoding = img_to_encoding(image_path, model)
-    
+
     min_dist = 99999
-    threshold = 0.7
-    # loop over all the recorded encodings in database 
+    # loop over all the recorded encodings in database
     for name in database:
         # find the similarity between the input encodings and claimed person's encodings using L2 norm
-        dist = np.linalg.norm(np.subtract(database[name], encoding) )
+        dist = np.linalg.norm(np.subtract(database[name], encoding))
         # check if minimum distance or not
         if dist < min_dist:
             min_dist = dist
@@ -109,9 +150,21 @@ def recognize_face(image_path, database, model):
         print("User not in the database.")
         identity = 'Unknown Person'
     else:
-        print ("Hi! " + str(identity) + ", L2 distance: " + str(min_dist))
-        
+        print("Hi! " + str(identity) + ", L2 distance: " + str(min_dist))
+
     return min_dist, identity
+
+# for doing face recognition 
+def do_face_recognition(user_db, FRmodel, threshold=0.7, save_loc="saved_image/1.jpg"):
+    # we can use the webcam to capture the user image then get it recognized
+    face_found = detect_face(user_db, FRmodel)
+
+    if face_found:
+        resize_img("saved_image/1.jpg")
+        find_face("saved_image/1.jpg", user_db, FRmodel, threshold)
+    else:
+        print('There was no face found in the visible frame. Try again...........')
+
 
 
 def main():
@@ -123,41 +176,46 @@ def main():
     user_db = ini_user_database()
     print('User database loaded')
 
-    #add_user_img_path(user_db, FRmodel, 'susanta', "images/1.jpg")
-    #add_user_img_path(user_db, FRmodel, 'person 2', "images/5.jpg")
     
     ch = 'y'
     while(ch == 'y' or ch == 'Y'):
         user_input = input(
-            'Enter choice \n1. Realtime Face Recognition\n2. Recognize face\n3. Add user\n4. Quit')
+            '\n\Enter choice \n1. Realtime Face Recognition\n2. Recognize face\n3. Add or Delete user\n4. Quit\n')
 
-        if ch == '1':
+        if user_input == '1':
             os.system('cls' if os.name == 'nt' else 'clear')
-        
-        elif ch == '2':
+            detect_face_realtime(user_db, FRmodel, threshold=0.7)
+
+        elif user_input == '2':
             os.system('cls' if os.name == 'nt' else 'clear')
             # we can use the webcam to capture the user image then get it recognized
-            detect_face()
-            img = resize_img("saved_image/1.jpg")
-            recognize_face("saved_image/1.jpg", user_db, FRmodel)
+            do_face_recognition(user_db, FRmodel, threshold=0.7,
+                                save_loc="saved_image/1.jpg")
 
-        elif ch == '3':
+        elif user_input == '3':
             os.system('cls' if os.name == 'nt' else 'clear')
-            print('1. Add user using saved image path\n2. Add user using Webcam')
-            add_ch = input()
+            print('1. Add user using saved image path\n2. Add user using Webcam\n3. Delete user')
 
+            add_ch = input()
+            name = input('Enter the name of the person')
+            
             if add_ch == '1':
+                img_path = input('Enter the image name with extension stored in images/')
+                add_user_img_path(user_db, FRmodel, name, img_path)
             elif add_ch == '2':
+                add_user_webcam(user_db, FRmodel, name)
+            elif add_ch == '3':
+                delete_user(user_db, name)
             else:
                 print('Invalid choice....\nTry again')
 
-
-        elif ch == '4':
+        elif user_input == '4':
             return
 
         else:
             print('Invalid choice....\nTry again')
 
+        ch = input('Continue ? y or n')
         # clear the screen
         os.system('cls' if os.name == 'nt' else 'clear')
 
