@@ -68,7 +68,12 @@ def detect_face(database, model):
     return face_found
     
 
+import time
+import os.path
+
 # detects faces in realtime from webcam feed
+
+
 def detect_face_realtime(database, model, threshold=0.7):
     text = ''
     font = cv2.FONT_HERSHEY_SIMPLEX
@@ -79,7 +84,7 @@ def detect_face_realtime(database, model, threshold=0.7):
 
     face_cascade = cv2.CascadeClassifier(
         r'haarcascades/haarcascade_frontalface_default.xml')
-
+    print('**************** Enter "q" to quit **********************')
     prev_time = time.time()
     while(True):
 
@@ -111,12 +116,14 @@ def detect_face_realtime(database, model, threshold=0.7):
 
                     min_dist, identity, registered = find_face_realtime(
                         save_loc, database, model, threshold)
-                    print('Welcome ' + identity + '!')
-                    if min_dist <= threshold:
+
+                    if min_dist <= threshold and registered:
                         # for putting text overlay on webcam feed
                         text = 'Welcome ' + identity
+                        print('Welcome ' + identity + '!')
                     else:
-                        text = ''
+                        text = 'Unknown user'
+                        print(identity + 'detected !')
 
                 # save the time when the last face recognition task was done
                 prev_time = time.time()
@@ -124,7 +131,7 @@ def detect_face_realtime(database, model, threshold=0.7):
             # draw a rectangle bounding the face
             cv2.rectangle(frame, (x-10, y-70),
                           (x+w+20, y+h+40), (255, 0, 0), 2)
-            cv2.putText(frame, text, (50, 50), font, 1.4, (21, 232, 13), 2)
+            cv2.putText(frame, text, (50, 50), font, 1.4, (0, 255, 0), 2)
 
         # display the frame with bounding rectangle
         cv2.imshow('frame', frame)
@@ -144,7 +151,7 @@ def find_face_realtime(image_path, database, model, threshold):
     encoding = img_to_encoding(image_path, model)
     registered = False
     min_dist = 99999
-
+    identity = 'Unknown Person'
     # loop over all the recorded encodings in database
     for name in database:
         # find the similarity between the input encodings and claimed person's encodings using L2 norm
