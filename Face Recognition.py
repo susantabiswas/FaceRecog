@@ -180,7 +180,7 @@ def main():
     ch = 'y'
     while(ch == 'y' or ch == 'Y'):
         user_input = input(
-            '\n\Enter choice \n1. Realtime Face Recognition\n2. Recognize face\n3. Add or Delete user\n4. Quit\n')
+            '\nEnter choice \n1. Realtime Face Recognition\n2. Recognize face\n3. Add or Delete user\n4. Quit\n')
 
         if user_input == '1':
             os.system('cls' if os.name == 'nt' else 'clear')
@@ -194,26 +194,28 @@ def main():
 
         elif user_input == '3':
             os.system('cls' if os.name == 'nt' else 'clear')
-            print('1. Add user using saved image path\n2. Add user using Webcam\n3. Delete user')
+            print(
+                '1. Add user using saved image path\n2. Add user using Webcam\n3. Delete user\n')
 
             add_ch = input()
-            name = input('Enter the name of the person')
-            
+            name = input('Enter the name of the person\n')
+
             if add_ch == '1':
-                img_path = input('Enter the image name with extension stored in images/')
-                add_user_img_path(user_db, FRmodel, name, img_path)
+                img_path = input(
+                    'Enter the image name with extension stored in images/\n')
+                add_user_img_path(user_db, FRmodel, name, 'images/' + img_path)
             elif add_ch == '2':
                 add_user_webcam(user_db, FRmodel, name)
             elif add_ch == '3':
                 delete_user(user_db, name)
             else:
-                print('Invalid choice....\nTry again')
+                print('Invalid choice....\n')
 
         elif user_input == '4':
             return
 
         else:
-            print('Invalid choice....\nTry again')
+            print('Invalid choice....\nTry again?\n')
 
         ch = input('Continue ? y or n')
         # clear the screen
