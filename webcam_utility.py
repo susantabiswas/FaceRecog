@@ -131,7 +131,7 @@ def detect_face_realtime(database, model, threshold=0.7):
             # draw a rectangle bounding the face
             cv2.rectangle(frame, (x-10, y-70),
                           (x+w+20, y+h+40), (255, 0, 0), 2)
-            cv2.putText(frame, text, (50, 50), font, 1.4, (0, 255, 0), 2)
+            cv2.putText(frame, text, (50, 50), font, 1.4, (255, 255, 0), 2)
 
         # display the frame with bounding rectangle
         cv2.imshow('frame', frame)
