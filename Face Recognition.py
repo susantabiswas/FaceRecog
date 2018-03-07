@@ -58,7 +58,6 @@ def triplet_loss(y_true, y_pred, alpha = 0.2):
 # 
 # #### Output
 # - A matrix of shape **(m, 128)** where the 128 numbers are the encoding values for $ith$ image.
-
 # load the model
 def load_model():
     FRmodel = faceRecoModel(input_shape=(3, 96, 96))
@@ -152,7 +151,7 @@ def main():
             else:
                 print('Invalid choice....\nTry again')
 
-                
+
         elif ch == '4':
             return
 
