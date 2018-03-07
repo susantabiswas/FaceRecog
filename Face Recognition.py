@@ -217,7 +217,7 @@ def main():
         else:
             print('Invalid choice....\nTry again?\n')
 
-        ch = input('Continue ? y or n')
+        ch = input('Continue ? y or n\n')
         # clear the screen
         os.system('cls' if os.name == 'nt' else 'clear')
 
