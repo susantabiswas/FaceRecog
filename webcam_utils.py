@@ -59,13 +59,13 @@ def detect_face(database, model):
     capture_obj.release()
     cv2.destroyAllWindows()
 
-    if os.path.exists(save_loc):
+    if img is not None:
         face_found = True
     else:
         face_found = False
 
     return face_found
-
+    
 
 # detects faces in realtime from webcam feed
 def detect_face_realtime(database, model, threshold=0.7):
@@ -104,8 +104,9 @@ def detect_face_realtime(database, model, threshold=0.7):
             curr_time = time.time()
 
             if curr_time - prev_time >= 5:
-                if os.path.exists(save_loc):
-                    resize_img("saved_image/1.jpg")
+                img = cv2.imread(save_loc)
+                if img is not None:
+                    resize_img(save_loc)
 
                     min_dist, identity, registered = recognize_face_realtime(
                         save_loc, database, model, threshold)
