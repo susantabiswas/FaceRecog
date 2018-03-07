@@ -25,6 +25,7 @@ import tensorflow as tf
 from utility import *
 from inception_blocks_v2 import *
 from webcam_utils import *
+import os
 np.set_printoptions(threshold=np.nan)
 
 
@@ -123,14 +124,43 @@ def main():
     user_db = ini_user_database()
     print('User database loaded')
 
-    add_user_img_path(user_db, FRmodel, 'susanta', "images/1.jpg")
-    add_user_img_path(user_db, FRmodel, 'person 2', "images/5.jpg")
+    #add_user_img_path(user_db, FRmodel, 'susanta', "images/1.jpg")
+    #add_user_img_path(user_db, FRmodel, 'person 2', "images/5.jpg")
+    
+    ch = 'y'
+    while(ch == 'y' or ch == 'Y'):
+        user_input = input(
+            'Enter choice \n1. Realtime Face Recognition\n2. Recognize face\n3. Add user\n4. Quit')
 
-    # we can use the webcam to capture the user image then get it recognized
-    detect_face()
-    img = resize_img("saved_image/1.jpg")
-    recognize_face("saved_image/1.jpg", user_db, FRmodel)
+        if ch == '1':
+            os.system('cls' if os.name == 'nt' else 'clear')
+        
+        elif ch == '2':
+            os.system('cls' if os.name == 'nt' else 'clear')
+            # we can use the webcam to capture the user image then get it recognized
+            detect_face()
+            img = resize_img("saved_image/1.jpg")
+            recognize_face("saved_image/1.jpg", user_db, FRmodel)
 
+        elif ch == '3':
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print('1. Add user using saved image path\n2. Add user using Webcam')
+            add_ch = input()
+
+            if add_ch == '1':
+            elif add_ch == '2':
+            else:
+                print('Invalid choice....\nTry again')
+
+                
+        elif ch == '4':
+            return
+
+        else:
+            print('Invalid choice....\nTry again')
+
+        # clear the screen
+        os.system('cls' if os.name == 'nt' else 'clear')
 
 if __name__ == main():
     main()
