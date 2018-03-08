@@ -19,7 +19,8 @@ Face Recognition system using **Siamese Neural network**. The model is based on 
  ### Controlling the recognition accuracy:
  The threshold value controls the confidence with which the face is recognized, you can control it by changing the threshold parameter value in function calls. <br><br>
  
- ### Here is a demo video
+ ## Here is a demo gif
+ #### NOTE: The FPS is very less in the gif that is why it seems to lag everywhere.
  ![demo](media/3.gif)<br><br>
  
  
