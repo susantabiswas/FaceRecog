@@ -19,6 +19,9 @@ Face Recognition system using **Siamese Neural network**. The model is based on 
  ### Controlling the recognition accuracy:
  The threshold value controls the confidence with which the face is recognized, you can control it by changing the threshold parameter value in function calls. <br><br>
  
+ ### Here is a demo video
+ ![demo](media/3.gif)<br><br>
+ 
  
 #### References:
 - Code for Facenet model is based on the assignment from Convolutional Neural Networks Specialization by Deeplearning.ai on Coursera.<br>
