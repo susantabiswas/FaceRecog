@@ -123,7 +123,7 @@ def detect_face_realtime(database, model, threshold=0.7):
                         print('Welcome ' + identity + '!')
                     else:
                         text = 'Unknown user'
-                        print(identity + 'detected !')
+                        print('Unknown user' + ' detected !')
 
                 # save the time when the last face recognition task was done
                 prev_time = time.time()
