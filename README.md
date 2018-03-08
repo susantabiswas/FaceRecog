@@ -4,7 +4,7 @@ Face Recognition system using **Siamese Neural network**. The model is based on 
  
 ### There are two versions available:
 1. **Jupyter Notebook**: Explains things in greater details.<br><br>
-2. **Command line program**: Python script for the same. Below are some snapshots of it.<br>
+2. **Command line program**: Python script for the same. Below are some snapshots of it.<br><br>
 ![1](media/1.JPG)
 ![4](media/4.JPG)<br>
 ![2](media/2.JPG)<br>
