@@ -2,7 +2,14 @@
 Face Recognition system using **Siamese Neural network**. The model is based on the **FaceNet model**. 
 **OpenCV** implementaion has been done for realtime face detection and recognition using the network. The model uses face encodings for identifying users.<br><br>
  
- 
+### There are two versions available:
+1. **Jupyter Notebook**: Explains things in greater details.<br><br>
+2. **Command line program**: Python script for the same. Below are some snapshots of it.<br>
+![1](media/1.JPG)
+![4](media/4.JPG)<br>
+![2](media/2.JPG)<br>
+
+
 ### Face recognition
  There are two options:
  1. **Realtime facial recognition:** In this the model does facial recognition in realtime using the camera feed with text overlay telling whether the user is registered with the system or not.
