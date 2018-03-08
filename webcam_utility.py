@@ -68,9 +68,6 @@ def detect_face(database, model):
     return face_found
     
 
-import time
-import os.path
-
 # detects faces in realtime from webcam feed
 
 
