@@ -1,6 +1,11 @@
 # <u>Face Recognition System
-Face Recognition system using **Siamese Neural network**. The model is based on the **Facenet model**. 
-OpenCV implementaion has been done for realtime face detection and recognition through the network.
+Face Recognition system using **Siamese Neural network**. The model is based on the **FaceNet model**. 
+**OpenCV** implementaion has been done for realtime face detection and recognition using the network. The model uses face encodings for identifying users.
+  
+ There are two options:
+ 1. **Realtime facial recognition:** In this the model does facial recognition in realtime using the camera feed with text overlay telling whether the user is registered with the system or not.
+ 2. **Normal facial recognition:** In this the camera starts for 5-6 seconds and snaps some pictures of the user, then the picture is used for recognition.
+ 
   
   
 #### References:
