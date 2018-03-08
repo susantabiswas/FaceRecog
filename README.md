@@ -1,20 +1,23 @@
 # <u>Face Recognition System
 Face Recognition system using **Siamese Neural network**. The model is based on the **FaceNet model**. 
-**OpenCV** implementaion has been done for realtime face detection and recognition using the network. The model uses face encodings for identifying users.
+**OpenCV** implementaion has been done for realtime face detection and recognition using the network. The model uses face encodings for identifying users.<br><br>
+ 
  
 ### Face recognition
  There are two options:
  1. **Realtime facial recognition:** In this the model does facial recognition in realtime using the camera feed with text overlay telling whether the user is registered with the system or not.
- 2. **Normal facial recognition:** In this the camera starts for 5-6 seconds and snaps some pictures of the user, then the picture is used for recognition.
+ 2. **Normal facial recognition:** In this the camera starts for 5-6 seconds and snaps some pictures of the user, then the picture is used for recognition.<br>
+ 
  
  ### Options for adding a new user:
  The program uses a python dictionary for mapping for users to their corresponding face encodings. 
  1. **Using the image path**: In this the **full image name** is provided along with the **name** of the person.
  The image should be saved in the **images** folder.
- 2. **Using the camera**: The webcam starts and takes picture of the user in the frame and registers his/her.
+ 2. **Using the camera**: The webcam starts and takes picture of the user in the frame and registers his/her.<br>
+ 
  
  ### Controlling the recognition accuracy:
- The threshold value controls the confidence with which the face is recognized, you can control it by changing the threshold parameter value in function calls. 
+ The threshold value controls the confidence with which the face is recognized, you can control it by changing the threshold parameter value in function calls. <br><br>
  
  
 #### References:
