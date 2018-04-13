@@ -15,6 +15,7 @@ from keras.layers.core import Lambda, Flatten, Dense
 from keras.initializers import glorot_uniform
 from keras.engine.topology import Layer
 from keras import backend as K
+from keras.models import load_model
 K.set_image_data_format('channels_first')
 
 import pickle
@@ -61,17 +62,10 @@ def triplet_loss(y_true, y_pred, alpha = 0.2):
 # #### Output
 # - A matrix of shape **(m, 128)** where the 128 numbers are the encoding values for $ith$ image.
 # load the model
-def load_model():
-    FRmodel = faceRecoModel(input_shape=(3, 96, 96))
-    FRmodel.compile(optimizer = 'adam', loss = triplet_loss, metrics = ['accuracy'])
+def load_FRmodel():
+    FRmodel = load_model('models/model.h5', custom_objects={'triplet_loss': triplet_loss})
     return FRmodel
 
-# ### Loading the trained weights
-# We will be using a pretrained model since it requires a lot of time and data for training such a model.
-def load_model_weights(FRmodel):
-    # load saved weights
-    load_weights_from_FaceNet(FRmodel)
-    return FRmodel
 
 # We will create a database of registered. For this we will use a simple dictionary and map each registered user with his/her face encoding.
 # initialize the user database
@@ -168,11 +162,9 @@ def do_face_recognition(user_db, FRmodel, threshold=0.7, save_loc="saved_image/1
 
 
 def main():
-    FRmodel = load_model()
+    FRmodel = load_FRmodel()
     print('\n\nModel loaded...')
-    FRmodel = load_model_weights(FRmodel)
-    print('Model weights loaded...')
-
+   
     user_db = ini_user_database()
     print('User database loaded')
 
