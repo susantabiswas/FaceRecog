@@ -116,19 +116,19 @@ def detect_face_realtime(database, model, threshold=0.7):
 
                     if min_dist <= threshold and registered:
                         # for putting text overlay on webcam feed
-                        text = identity
+                        text = 'Welcome ' + identity
                         print('Welcome ' + identity + '!')
                     else:
                         text = 'Unknown user'
                         print('Unknown user' + ' detected !')
-
+                    print('distance:' + str(min_dist))
                 # save the time when the last face recognition task was done
                 prev_time = time.time()
 
             # draw a rectangle bounding the face
             cv2.rectangle(frame, (x-10, y-70),
                           (x+w+20, y+h+40), (15, 175, 61), 4)
-            cv2.putText(frame, text, (x - 15, y -80), font, 1.5, (158, 11, 40), 3)
+            cv2.putText(frame, text, (50, 50), font, 1.8, (158, 11, 40), 3)
 
         # display the frame with bounding rectangle
         cv2.imshow('frame', frame)
