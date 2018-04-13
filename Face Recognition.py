@@ -66,7 +66,6 @@ def load_FRmodel():
     FRmodel = load_model('models/model.h5', custom_objects={'triplet_loss': triplet_loss})
     return FRmodel
 
-
 # We will create a database of registered. For this we will use a simple dictionary and map each registered user with his/her face encoding.
 # initialize the user database
 def ini_user_database():
@@ -164,10 +163,9 @@ def do_face_recognition(user_db, FRmodel, threshold=0.7, save_loc="saved_image/1
 def main():
     FRmodel = load_FRmodel()
     print('\n\nModel loaded...')
-   
+
     user_db = ini_user_database()
     print('User database loaded')
-
     
     ch = 'y'
     while(ch == 'y' or ch == 'Y'):
@@ -176,12 +174,12 @@ def main():
 
         if user_input == '1':
             os.system('cls' if os.name == 'nt' else 'clear')
-            detect_face_realtime(user_db, FRmodel, threshold=0.7)
+            detect_face_realtime(user_db, FRmodel, threshold=0.6)
 
         elif user_input == '2':
             os.system('cls' if os.name == 'nt' else 'clear')
             # we can use the webcam to capture the user image then get it recognized
-            do_face_recognition(user_db, FRmodel, threshold=0.7,
+            do_face_recognition(user_db, FRmodel, threshold=0.6,
                                 save_loc="saved_image/1.jpg")
 
         elif user_input == '3':
