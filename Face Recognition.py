@@ -27,7 +27,6 @@ from numpy import genfromtxt
 import pandas as pd
 import tensorflow as tf
 from utility import *
-from inception_blocks_v2 import *
 from webcam_utility import *
 np.set_printoptions(threshold=np.nan)
 
