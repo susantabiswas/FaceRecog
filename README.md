@@ -1,3 +1,4 @@
+[![HitCount](http://hits.dwyl.io/susantabiswas/FaceRecog.svg)](http://hits.dwyl.io/susantabiswas/FaceRecog)
 # <u>Face Recognition System
 Face Recognition system using **Siamese Neural network**. The model is based on the **FaceNet model**. 
 **OpenCV** implementaion has been done for realtime face detection and recognition using the network. The model uses face encodings for identifying users.<br><br>
