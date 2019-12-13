@@ -28,7 +28,8 @@ import pandas as pd
 import tensorflow as tf
 from utility import *
 from webcam_utility import *
-np.set_printoptions(threshold=np.nan)
+import sys
+np.set_printoptions(threshold=sys.maxsize)
 
 
 # ## Model
