@@ -11,6 +11,9 @@ import h5py
 
 def img_to_encoding(image_path, model):
     img1 = cv2.imread(image_path, 1)
+    # resize the image to 96 x 96
+    img1 = cv2.resize(img1, (96, 96))
+    
     img = img1[...,::-1]
     img = np.around(np.transpose(img, (2,0,1))/255.0, decimals=12)
     x_train = np.array([img])
@@ -18,7 +21,7 @@ def img_to_encoding(image_path, model):
     return embedding
 
 # loads and resizes an image
-def resize_img(image_path):
+def resize_img(image_path, save_path):
     img = cv2.imread(image_path, 1)
     img = cv2.resize(img, (96, 96))
     cv2.imwrite(image_path, img)

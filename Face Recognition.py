@@ -28,7 +28,6 @@ import pandas as pd
 import tensorflow as tf
 from utility import *
 from webcam_utility import *
-np.set_printoptions(threshold=np.nan)
 
 
 # ## Model
@@ -67,22 +66,26 @@ def load_FRmodel():
 
 # We will create a database of registered. For this we will use a simple dictionary and map each registered user with his/her face encoding.
 # initialize the user database
+# initialize the user database
 def ini_user_database():
     # check for existing database
     if os.path.exists('database/user_dict.pickle'):
         with open('database/user_dict.pickle', 'rb') as handle:
-            user_db = pickle.load(handle)
+            user_db = pickle.load(handle)   
     else:
         # make a new one
         # we use a dict for keeping track of mapping of each person with his/her face encoding
         user_db = {}
-
+        # create the directory for saving the db pickle file
+        os.makedirs('database')
+        with open('database/user_dict.pickle', 'wb') as handle:
+            pickle.dump(user_db, handle, protocol=pickle.HIGHEST_PROTOCOL)   
     return user_db
 
 
 # adds a new user face to the database using his/her image stored on disk using the image path
 def add_user_img_path(user_db, FRmodel, name, img_path):
-    if name not in user_db:
+    if name not in user_db: 
         user_db[name] = img_to_encoding(img_path, FRmodel)
         # save the database
         with open('database/user_dict.pickle', 'wb') as handle:
