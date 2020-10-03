@@ -109,7 +109,7 @@ def detect_face_realtime(database, model, threshold=0.7):
             if curr_time - prev_time >= 3:
                 img = cv2.imread(save_loc)
                 if img is not None:
-                    resize_img(save_loc)
+                    resize_img(image_path=save_loc, save_path=save_loc)
 
                     min_dist, identity, registered = find_face_realtime(
                         save_loc, database, model, threshold)

@@ -153,9 +153,9 @@ def find_face(image_path, database, model, threshold=0.6):
 def do_face_recognition(user_db, FRmodel, threshold=0.7, save_loc="saved_image/1.jpg"):
     # we can use the webcam to capture the user image then get it recognized
     face_found = detect_face(user_db, FRmodel)
-
+    
     if face_found:
-        resize_img("saved_image/1.jpg")
+        resize_img(image_path="saved_image/1.jpg", save_path="saved_image/1.jpg")
         find_face("saved_image/1.jpg", user_db, FRmodel, threshold)
     else:
         print('There was no face found in the visible frame. Try again...........')
@@ -214,4 +214,5 @@ def main():
         os.system('cls' if os.name == 'nt' else 'clear')
 
 if __name__ == main():
-    main()
+    print('********************',os.path.exists('models/model.h5'))
+    #main()
