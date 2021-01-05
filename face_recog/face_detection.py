@@ -4,8 +4,12 @@
 # ===================================================
 '''Description: Class for face detection. Uses a CNN 
 based neural network to get the bounding box coordinates 
-for a human face'''
+for a human face.
+
+Usage: python -m face_recog.face_detection
+'''
 # ===================================================
+
 from face_recog.exceptions import ModelFileMissing
 import cv2
 import os  
@@ -41,6 +45,7 @@ class FaceDetector:
         detections = self.face_detector.forward()
 
         return detections
+
 
     def detect_face(self, image, 
                     conf_threshold: float=0.7)->List[List[int]]:
