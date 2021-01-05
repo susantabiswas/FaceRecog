@@ -1,35 +1,29 @@
-from exceptions import ModelFileMissing
-from face_detection import FaceDetector
-import unittest
-import cv2
-import os
+import pytest
+from face_recog.exceptions import ModelFileMissing
+from face_recog.face_detection import FaceDetector
 
-class TestFaceDetection(unittest.TestCase):
-    def __init__(self, img_loc='data/sample/1.jpg') -> None:
-        self.img = cv2.imread(img_loc)
-
-    def test_correct_model_path(self, model_loc='./models'):
+def test_correct_model_path(benchmark):
         """
             Test object init with the correct model path 
         """
         ob = None
+        model_loc='./models'
         try:
-            ob = FaceDetector(model_loc=model_loc)
+            ob = benchmark(FaceDetector(model_loc=model_loc))
         except Exception: 
             pass
         finally:
-            self.assertIsInstance(ob, FaceDetector)
+            print('*****************************',ob)
+            assert isinstance(ob, FaceDetector)
 
-    def test_incorrect_model_path(self, 
-            inccorrect_model_loc='./wrong_models'):
-        """
-            Test object init with the incorrect model path 
-        """
-        ob = None
-        with self.assertRaises(ModelFileMissing):
-            ob = FaceDetector(model_loc=inccorrect_model_loc)
-       
+def test_incorrect_model_path():
+    """
+        Test object init with the incorrect model path 
+    """
+    ob = None
+    inccorrect_model_loc='./wrong_models'
+    with pytest.raises(ModelFileMissing):
+        ob = FaceDetector(model_loc=inccorrect_model_loc)
 
 
-if __name__ == "__main__":
-    unittest.main()
+test_correct_model_path()
