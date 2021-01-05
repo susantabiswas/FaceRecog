@@ -6,7 +6,7 @@
 based neural network to get the bounding box coordinates 
 for a human face'''
 # ===================================================
-from exceptions import ModelFileMissing
+from face_recog.exceptions import ModelFileMissing
 import cv2
 import os  
 from typing import List
@@ -69,6 +69,8 @@ class FaceDetector:
         return bboxes
 
 
+    def __repr__(self):
+        return "FaceDetector"
 
 if __name__ == "__main__":
     # Sample Usage
@@ -76,3 +78,4 @@ if __name__ == "__main__":
     img = cv2.imread('data/sample/1.jpg')
     bbox = ob.detect_face(img)
     print(bbox)
+    print(ob)
