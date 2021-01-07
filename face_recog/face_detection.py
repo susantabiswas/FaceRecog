@@ -80,7 +80,7 @@ class FaceDetector:
 if __name__ == "__main__":
     # Sample Usage
     ob = FaceDetector(model_loc='models')
-    img = cv2.imread('data/sample/1.jpg')
+    img = cv2.imread('data/sample/2.jpg')
     bbox = ob.detect_face(img)
     print(bbox)
     print(ob)
