@@ -1,7 +1,6 @@
 import pytest
 from face_recog.exceptions import ModelFileMissing
 from face_recog.face_detection import FaceDetector
-import cv2 
 
 def test_correct_model_path():
         """
