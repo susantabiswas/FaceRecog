@@ -14,3 +14,21 @@ class ModelFileMissing(Exception):
     def __init__(self):
         self.message = "Model file missing!!"
 
+
+class NoFaceDetected(Exception):
+    """Raised when no face is detected in an image
+
+    Attributes:
+        message: (str) Exception message
+    """
+    def __init__(self) -> None:
+        self.message = "No face found in image!!"
+
+class MultipleFacesDetected(Exception):
+    """Raised when multiple faces are detected in an image
+
+    Attributes:
+        message: (str) Exception message
+    """
+    def __init__(self) -> None:
+        self.message = "Multiple faces found in image!!"
