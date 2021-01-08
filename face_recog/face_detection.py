@@ -10,7 +10,8 @@ Usage: python -m face_recog.face_detection
 '''
 # ===================================================
 
-from face_recog.exceptions import ModelFileMissing
+from face_recog.validators import is_valid_img
+from face_recog.exceptions import ModelFileMissing, InvalidImage
 import cv2
 import os  
 from typing import List
@@ -51,7 +52,9 @@ class FaceDetector:
                     conf_threshold: float=0.7)->List[List[int]]:
         if image is None:
             return []
-
+        
+        if not is_valid_img(image):
+            raise InvalidImage
         # To prevent modification of orig img
         image = image.copy()
         height, width = image.shape[:2]
@@ -80,7 +83,10 @@ class FaceDetector:
 if __name__ == "__main__":
     # Sample Usage
     ob = FaceDetector(model_loc='models')
-    img = cv2.imread('data/sample/2.jpg')
+    img = cv2.imread('data/sample/1.jpg')
+
+    import numpy as np
+    img = np.zeros((100,100,5), dtype='float32')
     bbox = ob.detect_face(img)
     print(bbox)
     print(ob)
