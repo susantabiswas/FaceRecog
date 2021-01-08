@@ -42,7 +42,7 @@ class FaceRecognition:
         # Face detection: If there are multiple faces detected
         # we dont register and throw an exception
         try:
-            bboxes = self.face_detector.detect_face(image=image)
+            bboxes = self.face_detector.detect_faces(image=image)
         except Exception as exc:
             raise exc
 

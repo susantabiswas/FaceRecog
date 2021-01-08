@@ -28,4 +28,4 @@ def test_incorrect_model_path():
 def test_detect_face(img1_data):
     model_loc='./models'
     ob = FaceDetector(model_loc=model_loc)
-    assert [[348, 76, 407, 166]] == ob.detect_face(img1_data)
+    assert [[348, 76, 407, 166]] == ob.detect_faces(img1_data)
