@@ -32,3 +32,12 @@ class MultipleFacesDetected(Exception):
     """
     def __init__(self) -> None:
         self.message = "Multiple faces found in image!!"
+
+class InvalidImage(Exception):
+    """Raised when an invalid image is encountered based on array dimension
+    Attributes:
+        message: (str) Exception message
+    """
+    def __init__(self) -> None:
+        self.message = "Invalid Image!!"
+
