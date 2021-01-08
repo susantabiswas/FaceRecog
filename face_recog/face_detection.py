@@ -2,11 +2,11 @@
 # ===================================================
 # Author: Susanta Biswas
 # ===================================================
-'''Description: Class for face detection. Uses a CNN 
-based neural network to get the bounding box coordinates 
+'''Description: Class for face detection. Uses a OpenCV's CNN 
+model to get the bounding box coordinates 
 for a human face.
 
-Usage: python -m face_recog.face_detection
+Usage: python -m face_recog.face_detection_opencv
 '''
 # ===================================================
 
@@ -15,8 +15,9 @@ from face_recog.exceptions import ModelFileMissing, InvalidImage
 import cv2
 import os  
 from typing import List
+from face_recog.face_detector import FaceDetector
 
-class FaceDetector:
+class FaceDetectorOPENCV(FaceDetector):
     def __init__(self, model_loc='./models'):
         # Model file and associated config path
         model_path = os.path.join(model_loc,
@@ -48,7 +49,7 @@ class FaceDetector:
         return detections
 
 
-    def detect_face(self, image, 
+    def detect_faces(self, image, 
                     conf_threshold: float=0.7)->List[List[int]]:
         if image is None:
             return []
@@ -78,15 +79,16 @@ class FaceDetector:
 
 
     def __repr__(self):
-        return "FaceDetector"
+        return "FaceDetectorOPENCV <model_loc=str>"
+
 
 if __name__ == "__main__":
     # Sample Usage
-    ob = FaceDetector(model_loc='models')
+    ob = FaceDetectorOPENCV(model_loc='models')
     img = cv2.imread('data/sample/1.jpg')
 
-    import numpy as np
-    img = np.zeros((100,100,5), dtype='float32')
-    bbox = ob.detect_face(img)
+    # import numpy as np
+    # img = np.zeros((100,100,5), dtype='float32')
+    bbox = ob.detect_faces(img)
     print(bbox)
     print(ob)
