@@ -9,10 +9,14 @@ class TestFaceRecognition:
     def setup(self) -> None:
         self.face_recognizer = FaceRecognition(model_loc='models')
 
-    def test_register_face(self, img1_data):
-        pass
+    def test_register_face(self, img2_data, img2_encoding):
+        name = "Keanu"
+        facial_data = self.face_recognizer.register_face(img2_data, name)
+        assert np.all(facial_data['encoding'] == img2_encoding) == True \
+                and facial_data['name'] == name
 
-    def test_recognize_face(self, img1_data):
+
+    def test_recognize_face(self, img2_data):
         pass
 
     def test_save_facial_data(self):
@@ -35,35 +39,6 @@ class TestFaceRecognition:
         with pytest.raises(InvalidImage):
             self.face_recognizer.register_face(img, "test1")
 
-
-    def test_convert_to_dlib_rectangle(self):
-        """ Check if dlib rectangle is created properly"""
-        bbox = [1, 2, 3, 4]
-        dlib_box = dlib.rectangle(bbox[0], bbox[1], bbox[2], bbox[3])
-        assert self.face_recognizer.convert_to_dlib_rectangle(bbox) == dlib_box
-    
-
-    def test_load_image_path(self):
-        """ Check if exception is thrown when an invalid array is given"""
-        path = 'data/sample/1.jpg'
-        img = cv2.imread(path)
-        loaded_img = self.face_recognizer.load_image_path(path)
-        assert np.all(loaded_img == img) == True
-
-
-    def test_convert_to_rgb_exception(self):
-        """ Check if exception is thrown when an invalid array is given"""
-        # create a dummy image
-        img = np.zeros((100, 100, 5))
-        with pytest.raises(InvalidImage):
-            self.face_recognizer.convert_to_rgb(img)
-
-
-    def test_convert_to_rgb(self, img1_data):
-        """ Check if RGB conversion happens correctly"""
-        rgb = cv2.cvtColor(img1_data, cv2.COLOR_BGR2RGB)
-        converted_img = self.face_recognizer.convert_to_rgb(img1_data)
-        assert np.all(rgb == converted_img) == True
 
     def test_euclidean_distance(self):
         """ Check if euclidean distance computation works"""
