@@ -1,6 +1,6 @@
 import pytest
 from face_recog.exceptions import ModelFileMissing
-from face_recog.face_detection import FaceDetector
+from face_recog.face_detection_opencv import FaceDetectorOpenCV
 
 def test_correct_model_path():
         """
@@ -9,11 +9,11 @@ def test_correct_model_path():
         ob = None
         model_loc='./models'
         try:
-            ob = FaceDetector(model_loc=model_loc)
+            ob = FaceDetectorOpenCV(model_loc=model_loc)
         except Exception: 
             pass
         finally:
-            assert isinstance(ob, FaceDetector)
+            assert isinstance(ob, FaceDetectorOpenCV)
 
 def test_incorrect_model_path():
     """
@@ -22,10 +22,10 @@ def test_incorrect_model_path():
     ob = None
     inccorrect_model_loc='./wrong_models'
     with pytest.raises(ModelFileMissing):
-        ob = FaceDetector(model_loc=inccorrect_model_loc)
+        ob = FaceDetectorOpenCV(model_loc=inccorrect_model_loc)
 
 
 def test_detect_face(img1_data):
     model_loc='./models'
-    ob = FaceDetector(model_loc=model_loc)
+    ob = FaceDetectorOpenCV(model_loc=model_loc)
     assert [[348, 76, 407, 166]] == ob.detect_faces(img1_data)
