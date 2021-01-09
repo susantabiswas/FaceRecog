@@ -19,7 +19,7 @@ from face_recog.validators import is_valid_img
 import cv2
 from face_recog.exceptions import (InvalidImage, ModelFileMissing, 
             NoFaceDetected, MultipleFacesDetected)
-from face_recog.face_detection import FaceDetector
+from face_recog.face_detection_opencv import FaceDetectorOpenCV
 from face_recog.media_utils import (convert_to_rgb,
                     convert_to_dlib_rectangle)
 import numpy as np
@@ -38,7 +38,7 @@ class FaceRecognition:
         face_recog_model_path = os.path.join(model_loc, 
                                         FaceRecognition.face_recog_model_path)
 
-        self.face_detector = FaceDetector(model_loc=model_loc)
+        self.face_detector = FaceDetectorOpenCV(model_loc=model_loc)
         self.keypoints_detector = dlib.shape_predictor(keypoints_model_path)
         self.face_recognizor = dlib.face_recognition_model_v1(face_recog_model_path)
 
@@ -102,13 +102,6 @@ class FaceRecognition:
 
     def euclidean_distance(self, vector1, vector2):
         return np.linalg.norm(vector1 - vector2) 
-
-
-
-
-
-
-
 
 
 if __name__ == "__main__":
