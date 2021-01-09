@@ -17,7 +17,7 @@ import os
 from typing import List
 from face_recog.face_detector import FaceDetector
 
-class FaceDetectorOPENCV(FaceDetector):
+class FaceDetectorOpenCV(FaceDetector):
     def __init__(self, model_loc='./models'):
         # Model file and associated config path
         model_path = os.path.join(model_loc,
