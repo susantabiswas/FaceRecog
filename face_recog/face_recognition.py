@@ -75,9 +75,11 @@ class FaceRecognition:
         # person, otherwise they are from different people. 
         face_encoding = self.get_face_encoding(image, face_keypoints)
         
+        # Convert the numpy array to normal python float list
+        # to make json serialization simpler
         facial_data = {
             "id": uuid.uuid4(),
-            "encoding": face_encoding,
+            "encoding": tuple(face_encoding.tolist()),
             "name": name
         }
         # save the encoding with the name
