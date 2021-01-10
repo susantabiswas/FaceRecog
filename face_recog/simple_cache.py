@@ -20,7 +20,7 @@ from typing import List, Dict
 
 class SimpleCache(InMemoryCache):
     def __init__(self, data: List[Dict]=None):
-        if data and (type(data) is not list \
+        if data is not None and (type(data) is not list \
             or (len(data) and type(data[0]) is not dict)):
             raise InvalidCacheInitializationData
 
@@ -60,11 +60,17 @@ if __name__ == "__main__":
     import numpy as np
 
     # Save data
-    face_data = {'name': 'test2', 
+    face_data = {'name': 'test3', 
             'encoding': (-3.4, 0.3, -.823, 1)}
-    ob = SimpleCache([{'name': 'test2', 'encoding': (-3.4, 0.3, -0.823, 1)},
+    ob = SimpleCache([{'name': 'test1', 'encoding': (-3.4, 0.3, -0.823, 1)},
                      {'name': 'test2', 'encoding': (-3.4, 0.3, -0.823, 1)}])
+    print(ob.get_all_data())
+    # [{'encoding': (-3.4, 0.3, -0.823, 1), 'name': 'test2'}, {'encoding': (-3.4, 0.3, -0.823, 1), 'name': 'test1'}]
+    
     ob.add_data(face_data=face_data)
     print(ob.get_all_data())
-
+    # print(sorted(ob.get_all_data(), key=lambda x: x['name']))
+    
+    # output
+    # [{'encoding': (-3.4, 0.3, -0.823, 1), 'name': 'test2'}, {'encoding': (-3.4, 0.3, -0.823, 1), 'name': 'test1'}]
     serialized_data = (('encoding', (-3.4, 0.3, -0.823, 1)), ('name', 'test2'))
