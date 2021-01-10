@@ -1,4 +1,4 @@
-from face_recog.exceptions import InvalidImage, 
+from face_recog.exceptions import InvalidImage
 import pytest
 from face_recog.media_utils import (convert_to_dlib_rectangle, 
                                     convert_to_rgb, 
