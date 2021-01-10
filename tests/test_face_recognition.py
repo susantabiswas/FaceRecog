@@ -6,14 +6,15 @@ import cv2
 import dlib 
 
 class TestFaceRecognition:
-    def setup(self) -> None:
+    def setup_class(self) -> None:
         self.face_recognizer = FaceRecognition(model_loc='models')
 
     def test_register_face(self, img2_data, img2_encoding):
         name = "Keanu"
         facial_data = self.face_recognizer.register_face(img2_data, name)
-        assert np.all(facial_data['encoding'] == img2_encoding) == True \
-                and facial_data['name'] == name
+        # float comparison
+        assert np.allclose(facial_data['encoding'], img2_encoding) \
+                 == True
 
 
     def test_recognize_face(self, img2_data):
