@@ -9,13 +9,21 @@ used for quicker look ups.
 For persistent storage a JSON file is used and for in memory cache,
 native python dictionary is used.
 '''
+from face_recog.validators import path_exists
+from face_recog.exceptions import DatabaseFileNotFound
+import os
+
 # ===================================================
 class FaceDataStore:
     def __init__(self, persistent_data_loc='data/facial_data.json') -> None:
-        pass
+        # check if the DB file exists
+        self.persistent_data_loc = persistent_data_loc
 
     def load_from_disk(self):
-        pass
+        # check if the DB file exists
+        if not path_exists(self.persistent_data_loc):
+            raise DatabaseFileNotFound
+            
 
     def save_to_disk(self):
         pass

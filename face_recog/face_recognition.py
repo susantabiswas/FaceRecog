@@ -112,11 +112,11 @@ if __name__ == "__main__":
     img2 = load_image_path('data/sample/2.jpg')
 
     print(img1.shape)
-    data1 = ob.register_face(image=img1, name='Test1')
+    # data1 = ob.register_face(image=img1, name='Test1')
     data2 = ob.register_face(image=img2, name='Test2')
 
-    print(data1)
+    # print(data1)
     print(data2)
 
-    print('Match:', ob.euclidean_distance(data1['encoding'], data2['encoding']))
+    # print('Match:', ob.euclidean_distance(data1['encoding'], data2['encoding']))
 
