@@ -55,3 +55,13 @@ def img2_keypoints():
                     [380, 134]]
 
     return keypoints
+
+@pytest.fixture
+def face_data1():
+    data1 = {'name': 'test1', 
+                'encoding': np.array([-3.4, 0.3, -.823, 1])}
+
+@pytest.fixture
+def face_data2():
+    data2 = {'name': 'test2', 
+            'encoding': np.array([-3.4, 0.3, -.823, 1])}
