@@ -58,3 +58,12 @@ class InvalidCacheInitializationData(Exception):
     """
     def __init__(self) -> None:
         self.message = "Invalid data structure. Please suppply a list!!"
+
+
+class NotADictionary(Exception):
+    """Raised when input is not a dictionary
+    Attributes:
+        message: (str) Exception message
+    """
+    def __init__(self) -> None:
+        self.message = "Invalid data structure. Please suppply a dict!!"
