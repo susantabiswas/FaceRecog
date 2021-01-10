@@ -59,9 +59,40 @@ def img2_keypoints():
 @pytest.fixture
 def face_data1():
     data1 = {'name': 'test1', 
-                'encoding': np.array([-3.4, 0.3, -.823, 1])}
+                'encoding':(-3.4, 0.3, -.823, 1)}
 
 @pytest.fixture
 def face_data2():
     data2 = {'name': 'test2', 
-            'encoding': np.array([-3.4, 0.3, -.823, 1])}
+            'encoding': (-3.4, 0.3, -.823, 1)}
+
+@pytest.fixture # Normally pytest parametrize should be used for this
+# scenario, but it was giving a weird parsing error on windows at the time
+# of dev, so i skipped
+def correct_cache_init_data():
+    return [
+        [], 
+        [{}],
+        [{'name': 'test2', 'encoding': (-3.4, 0.3, -.823, 1)}]
+    ]
+@pytest.fixture
+def incorrect_cache_init_data():
+    return [
+        [()],
+        {}
+    ]
+
+@pytest.fixture
+def simple_cache_init_data():
+    return [{'name': 'test1', 'encoding': (-3.4, 0.3, -0.823, 1)},
+            {'name': 'test2', 'encoding': (-3.4, 0.3, -0.823, 1)}]
+
+@pytest.fixture
+def simple_cache_data2():
+    return {'name': 'test2', 
+            'encoding': (-3.4, 0.3, -.823, 1)}
+
+@pytest.fixture
+def simple_cache_data3():
+    return {'name': 'test3', 
+            'encoding': (-3.4, 0.3, -.823, 1)}
