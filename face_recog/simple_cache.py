@@ -41,7 +41,20 @@ class SimpleCache(InMemoryCache):
     def get_all_data(self):
         return self.deserialize_data(self.facial_data)
 
+
+    def delete_data(self, face_id):
+        for data in self.facial_data:
+            for key_pair in data:            
+                if face_id in key_pair:
+                    self.facial_data.discard(data)
+                    return True
+        return False
+
     def serialize_dict(self, data):
+        # Convert list to tuple
+        if 'encoding' in data and \
+            type(data['encoding']) is list:
+            data['encoding'] = tuple(data['encoding'])
         if type(data) is not dict:
             raise NotADictionary
         return tuple(sorted(data.items()))
@@ -54,7 +67,12 @@ class SimpleCache(InMemoryCache):
 
         return facial_data
 
-    
+    def get_details(self):
+        """ Returns the name and unique face id of each registered user"""
+        facial_data = self.get_all_data()
+        facial_data = [(face_data['id'], face_data['name']) \
+                        for face_data in facial_data]
+        return facial_data
 
 if __name__ == "__main__":
     import numpy as np
@@ -74,3 +92,6 @@ if __name__ == "__main__":
     # output
     # [{'encoding': (-3.4, 0.3, -0.823, 1), 'name': 'test2'}, {'encoding': (-3.4, 0.3, -0.823, 1), 'name': 'test1'}]
     serialized_data = (('encoding', (-3.4, 0.3, -0.823, 1)), ('name', 'test2'))
+
+    ob.delete_data(face_id='test1')
+    print(ob.get_all_data())
