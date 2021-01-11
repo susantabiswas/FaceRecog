@@ -35,9 +35,7 @@ class JSONStorage(PersistentStorage):
         try:
             # Add the new data and save to disk
             data.append(face_data)
-
-            with open(self.db_loc, 'w') as f:
-                json.dump(data, f)
+            self.save_data(data=data)
             print('[INFO] Data saved to DB...')
         except Exception as exc:
             raise exc
@@ -51,27 +49,67 @@ class JSONStorage(PersistentStorage):
             # load the existing data
             with open(self.db_loc, 'r') as f:
                 data = json.load(f)
-                # deserialize the dict data and convert back to dict
-                return data
+                # convert the list to tuple to keep 
+                # consistency across
+                return self.sanitize_data(data)
         except Exception as exc:
             raise exc
 
+    
+    def delete_data(self, face_id):
+        # load and search if face id exists and 
+        # save the data without that entry
+        all_data = self.get_all_data()
+        num_entries = len(all_data)
+        for idx, face_data in enumerate(all_data):
+            for key_pair in face_data.items():
+                # Check if the face id exists in current data item
+                if face_id in key_pair:
+                    all_data.pop(idx)
+
+        if num_entries != len(all_data):
+            self.save_data(data=all_data)
+            print(('[INFO] {} face(s) deleted and updated'
+                ' data saved to DB...').format(num_entries - len(all_data)))
+            return True
+        return False
+
+
+    def save_data(self, data=None):
+        if data is not None:
+            with open(self.db_loc, 'w') as f:
+                    json.dump(data, f)
+
+
+    def sanitize_data(self, data):
+        for face_data in data:
+            face_data['encoding'] = tuple(face_data['encoding'])
+        return data
 
 
 if __name__ == "__main__":
+    """ Sanity checks """
     import numpy as np
     ob = JSONStorage(db_loc='data/test_facial_data.json')
     # Save data
-    face_data = {'name': 'test2', 
-            'encoding': (-3.4, 0.3, -.823, 1)}
-    ob.add_data(face_data=face_data)
+    face_data1 = {'name': 'test1', 
+                'encoding': (-3.4, 0.3, -.823, 1)}
+    face_data2 = {'name': 'test2', 'encoding': (-3.4, 0.3, -0.823, 1)}
+    face_data3 = {'name': 'test3', 'encoding': (-3.4, 0.3, -0.823, 1)}
+    
+    ob.add_data(face_data=face_data1)
     print(ob.get_all_data())
 
-    ob.add_data(face_data=face_data)
+    ob.add_data(face_data=face_data2)
+    print(ob.get_all_data())
+    
+    # remove data
+    ob.delete_data(face_id="test1")
+    print('Test1 data deleted')
     print(ob.get_all_data())
 
     # remove the test file
     os.remove('data/test_facial_data.json')
-
+    print('File: {} deleted!'.format('data/test_facial_data.json'))
     
     
