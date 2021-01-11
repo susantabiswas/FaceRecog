@@ -37,3 +37,8 @@ def draw_annotation(image, name, bbox, color=(0, 255, 0)):
     font = cv2.FONT_HERSHEY_DUPLEX
     cv2.putText(image, name, (x1 + 6, y2 - 6), font, 0.3, (0, 0, 0), 1)
     
+def get_facial_ROI(image, bbox):
+    if image is None or bbox is None:
+        raise InvalidImage if image is None else ValueError
+    return image[bbox[1]:bbox[3],
+                bbox[0]: bbox[2], :]
