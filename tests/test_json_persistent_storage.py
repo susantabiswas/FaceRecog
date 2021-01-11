@@ -10,8 +10,9 @@ class TestJSONPersistentStorage:
         # Set the db file path for test usage
         cls.test_db_loc = 'data/test_facial_data.json'
 
+    # Temp test file deleted after each test function
     @classmethod
-    def teardown_class(cls):
+    def teardown_method(cls):
         # remove the test file
         if os.path.exists(cls.test_db_loc):
             os.remove(TestJSONPersistentStorage.test_db_loc)
@@ -22,7 +23,11 @@ class TestJSONPersistentStorage:
         ob = JSONStorage(db_loc=TestJSONPersistentStorage.test_db_loc)
         ob.add_data(face_data1)
         ob.add_data(face_data2)
-        assert ob.get_all_data() == [face_data1, face_data2]
+        print(ob.get_all_data())
+        assert sorted(ob.get_all_data(),
+                    key=lambda x: x['name']) == \
+                sorted([face_data1, face_data2], 
+                    key=lambda x: x['name'])
 
     def test_missing_db_get_all_data(self, face_data1):
         """ Check if an exception is thrown when 
@@ -37,3 +42,12 @@ class TestJSONPersistentStorage:
         
         with pytest.raises(DatabaseFileNotFound):
             ob.get_all_data()
+
+    def test_delete_data(self, face_data1, face_data2):
+        """ Check if data deletion works"""
+        ob = JSONStorage(db_loc=TestJSONPersistentStorage.test_db_loc)
+        ob.add_data(face_data1)
+        ob.add_data(face_data2)
+        ob.delete_data(face_id="test1")
+
+        assert ob.get_all_data() == [face_data2]
