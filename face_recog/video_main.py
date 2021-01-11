@@ -9,7 +9,7 @@ Usage: python -m face_recog.video_main'''
 # ===================================================
 import traceback
 from face_recog.exceptions import NoNameProvided
-from face_recog.media_utils import draw_annotation, draw_bounding_box
+from face_recog.media_utils import draw_annotation, draw_bounding_box, get_facial_ROI
 from face_recog.face_detection_opencv import FaceDetectorOpenCV
 from face_recog.face_recognition import FaceRecognition
 from face_recog.face_detection_mtcnn import FaceDetectorMTCNN
@@ -52,8 +52,7 @@ class FaceRecognitionVideo:
                     
                 for bbox in bboxes:
                     # crop the facial region
-                    face = frame[bbox[1]:bbox[3],
-                                bbox[0]: bbox[2], :]
+                    face = get_facial_ROI(frame, bbox)
                     if frame_num % detection_interval == 0:           
                         match, _ = self.face_recognizer\
                                     .recognize_face(image = face, threshold=0.6,
@@ -83,8 +82,8 @@ class FaceRecognitionVideo:
         try:
             cap = cv2.VideoCapture(0)
             frame_num = 0
-            match, bboxes = None, None
-                
+            registered_face = None
+
             while True:
                 status, frame = cap.read()
                 if not status:
@@ -92,41 +91,26 @@ class FaceRecognitionVideo:
                 
                 if frame_num % detection_interval == 0:
                     # detect faces
-                    # bboxes = self.face_detector.detect_faces(image=frame)
-                    try: 
-                        facial_data = self.face_recognizer \
-                                            .register_face(image=frame, 
-                                                        name=name,
-                                                        check_face_count=True)
-                        if facial_data:
-                            break
+                    bboxes = self.face_detector.detect_faces(image=frame)
+                    try:
+                        if len(bboxes) == 1: 
+                            face = get_facial_ROI(frame, bboxes[0])
+                            facial_data = self.face_recognizer \
+                                                .register_face(
+                                                    image=face, 
+                                                    name=name,
+                                                    check_face_count=False)
+                            if facial_data:
+                                registered_face = face
+                                break
                     except Exception as exc:
                         traceback.print_exc(file=sys.stdout)
-                        raise exc
-
-                # if len(bboxes) != 1:
-                #     print('[Error] More than one face detected')
-                # for bbox in bboxes:
-                #     # crop the facial region
-                #     face = frame[bbox[1]:bbox[3],
-                #                 bbox[0]: bbox[2], :]
-                #     if frame_num % detection_interval == 0:           
-                #         match, _ = self.face_recognizer\
-                #                     .recognize_face(image = face, threshold=0.6,
-                #                                 check_face_count=False)
-                #     name = match['name'] if match is not None else ''
-                #     # draw boudning box
-                #     draw_annotation(frame, name, bbox)
-                #     # draw face labels
-                #     print('Match: {}'.format(match))
-                
-                cv2.imshow('Preview', frame)
-                key = cv2.waitKey(1) & 0xFF
-                if key == ord('q'):
-                    break
-
+                        
                 frame_num += 1
-                
+            cv2.imshow('Registered Face', registered_face)
+            print('[INFO]Press any key to continue......')
+            cv2.waitKey(0)
+                                    
         except Exception as exc:
             raise exc
         finally:
@@ -134,6 +118,7 @@ class FaceRecognitionVideo:
 
             
 ob = FaceRecognitionVideo(face_detector='opencv')
-ob.recognize_face_video(video_path=None,
-                        detection_interval=5)
-# ob.register_face_webcam(name="susanta")
+# ob.recognize_face_video(video_path=None,
+#                         detection_interval=5)
+# register a face
+ob.register_face_webcam(name="susanta")
