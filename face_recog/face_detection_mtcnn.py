@@ -13,7 +13,7 @@ Ref: https://github.com/ipazc/mtcnn
 '''
 # ===================================================
 
-from face_recog.face_detection import FaceDetectorOPENCV
+from face_recog.media_utils import draw_bounding_box
 from face_recog.validators import is_valid_img
 from face_recog.exceptions import InvalidImage
 import os  
@@ -60,12 +60,15 @@ class FaceDetectorMTCNN(FaceDetector):
 
 
 if __name__ == "__main__":
+    
     # Sample Usage
     ob = FaceDetectorMTCNN()
-    img = cv2.imread('data/sample/1.jpg')
+    img = cv2.imread('data/sample/test.jpg')
 
     # import numpy as np
     # img = np.zeros((100,100,5), dtype='float32')
     bbox = ob.detect_faces(img)
     print(bbox)
     print(ob)
+    cv2.imshow('Test',draw_bounding_box(img, bbox[0]))
+    cv2.waitKey(0)
