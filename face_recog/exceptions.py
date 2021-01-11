@@ -67,3 +67,12 @@ class NotADictionary(Exception):
     """
     def __init__(self) -> None:
         self.message = "Invalid data structure. Please suppply a dict!!"
+
+
+class NoNameProvided(Exception):
+    """Raised when no name is supplied for face recognition
+    Attributes:
+        message: (str) Exception message
+    """
+    def __init__(self) -> None:
+        self.message = "Please provide a name for registering face!!"
