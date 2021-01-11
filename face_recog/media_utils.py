@@ -21,3 +21,19 @@ def load_image_path(img_path):
         return img
     except Exception as exc:
         raise exc
+
+def draw_bounding_box(image, bbox):
+    x1, y1, x2, y2 = bbox
+    cv2.rectangle(image, (x1, y1), (x2, y2),
+                        (0, 255, 0), 2)
+    return image
+
+def draw_annotation(image, name, bbox, color=(0, 255, 0)):
+    draw_bounding_box(image, bbox)
+    x1, y1, x2, y2 = bbox
+    
+    # Draw the label with name below the face
+    cv2.rectangle(image, (x1, y2 - 20), (x2, y2), color, cv2.FILLED)
+    font = cv2.FONT_HERSHEY_DUPLEX
+    cv2.putText(image, name, (x1 + 6, y2 - 6), font, 0.3, (0, 0, 0), 1)
+    
