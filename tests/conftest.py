@@ -60,12 +60,14 @@ def img2_keypoints():
 def face_data1():
     data1 = {'name': 'test1', 
                 'encoding':(-3.4, 0.3, -.823, 1)}
+    return data1
 
 @pytest.fixture
 def face_data2():
     data2 = {'name': 'test2', 
             'encoding': (-3.4, 0.3, -.823, 1)}
-
+    return data2
+    
 @pytest.fixture # Normally pytest parametrize should be used for this
 # scenario, but it was giving a weird parsing error on windows at the time
 # of dev, so i skipped
