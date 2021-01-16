@@ -76,24 +76,6 @@ class FaceRecognitionVideo:
                 if frame_num % detection_interval == 0:
                     smaller_frame = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
                     
-                    # detect faces
-                    # bboxes = self.face_detector.detect_faces(image=frame)
-                    
-                    # for bbox in bboxes:
-                    #     # crop the facial region
-                    #     # face = get_facial_ROI(frame, bbox)
-                    #     matches, name, match_dist = [], None, None
-                    #     if frame_num % detection_interval == 0:  
-                    #         try:         
-                    #             matches = self.face_recognizer\
-                    #                             .recognize_faces(
-                    #                                 image = frame, 
-                    #                                 threshold=0.6,
-                    #                                 bboxes=[bbox])
-                    # #             # print(matches)
-                    #         except Exception as exc:
-                    #             traceback.print_exc(file=sys.stdout)
-                                
                     matches = self.face_recognizer\
                                     .recognize_faces(
                                         image = smaller_frame, 
@@ -110,8 +92,8 @@ class FaceRecognitionVideo:
                             draw_annotation(frame, name, 2 * np.array(face_bbox))
                             print('Match: {}, dist: {}'.format(name, match_dist))
                 
-                # if save_output:
-                video_writer.write(frame)
+                if save_output:
+                    video_writer.write(frame)
                 
                 if preview:
                     cv2.imshow('Preview', cv2.resize(frame, (680, 480)))
@@ -135,8 +117,6 @@ class FaceRecognitionVideo:
             cv2.destroyAllWindows()
             cap.release()
             video_writer.release()
-
-            
 
     
     def register_face_webcam(self, name=None, detection_interval=5):
@@ -225,9 +205,3 @@ if __name__ == "__main__":
     print('[INFO] Test DB file deleted...')
 
     ###########################################
-    # ob.register_face_path(img_path='data/sample/sagar.jpg',name="sagar")
-    # ob.register_face_path(img_path='data/sample/amrutha.jpg',name="amrutha")
-    # ob.register_face_path(img_path='data/sample/vidit.jpg',name="vidit")
-
-    # ob.recognize_face_video(video_path='data/test.mkv', 
-    #         detection_interval=1, save_output=True, preview=True)

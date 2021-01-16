@@ -116,12 +116,7 @@ class FaceRecognition:
 
         if bboxes is None:    
             bboxes = self.face_detector.detect_faces(image=image)
-        #     bbox = bboxes[0]
-        #     """ Put exception here"""
-        #     if len(bboxes) == 0:
-        #         print('&&&&&&&&&&&&&&&&')
-        #         return
-        # print('BBOX', bbox)
+        
         # Load the data of existing registered faces
         # compare using the metric the closest match
         all_facial_data = self.datastore.get_all_facial_data()
@@ -133,7 +128,6 @@ class FaceRecognition:
             for face_data in all_facial_data:
                 dist = self.euclidean_distance(face_encoding, 
                                                 face_data['encoding'])
-                print('dist:', dist, 'name:', face_data['name'])
                 if dist <= threshold and dist < min_dist:
                     match = face_data
                     min_dist = dist
@@ -142,102 +136,9 @@ class FaceRecognition:
         return matches
 
 
-    def face_encodings(self, image, bboxes=None):
-        """ Put exception """
-        # if bboxes is None:
-        #     print('[ERROR]$$$$$$$$$$$$$$3')
-        #     return
-        # print('what', bboxes)
-        # bbox = [1, 1, image.shape[1]-1, image.shape[0]-1]
-        
-        # If the input image is already a cropped ROI, no need to check 
-        # for number of faces in image
-        if True:
-            # Face detection: If there are multiple faces detected
-            # we dont register and throw an exception
-            try:
-                bboxes = self.detect_faces(image)
-                # bboxes = self.face_detector.detect_faces(image=image,
-                #                         conf_threshold=self.face_detection_threshold)
-            except Exception as exc:
-                raise exc
-            # im = image.copy()
-            # print(bboxes)
-            # draw_bounding_box(im, bboxes[0])
-            
-            # draw_bounding_box(im, bboxes[1], color=(255,0,0))
-            
-            # cv2.imwrite('t1.jpg', im)
-            # In order to register a person, we should make sure
-            # only one face is present
-            # if len(bboxes) != 1:
-            #     raise NoFaceDetected if not len(bboxes) else MultipleFacesDetected
-            # bbox = bboxes[0]
-
-        # Convert the image back to RGB to feed to dlib based models
-        # try:
-        #     image = convert_to_rgb(image=image)
-        # except InvalidImage:
-        #     raise InvalidImage
-
-        # print(bbox)
-        encodings = []
-        for bbox in bboxes:
-            # draw_bounding_box(image, bbox, color=(255,0,0))
-                
-            # cv2.imwrite('data/faces/'+str(uuid.uuid4())+'.jpg', image)
-
-            # Convert to dlib format rectangle
-            # bbox = convert_to_dlib_rectangle(bbox)
-            # Get the facial landmark coordinates
-            face_keypoints = self.keypoints_detector(image, bbox)
-
-            # Compute the 128D vector that describes the face in an img identified by
-            # shape. In general, if two face descriptor vectors have a Euclidean
-            # distance between them less than 0.6 then they are from the same
-            # person, otherwise they are from different people. 
-            face_encoding = self.get_face_encoding(image, face_keypoints)
-            encodings.append(face_encoding)
-        return encodings
-
     def get_facial_fingerprint(self, image, bbox=None):
         if bbox is None:
             raise FaceMissing
-        
-        # # If the input image is already a cropped ROI, no need to check 
-        # # for number of faces in image
-        # if check_face_count:
-        #     # Face detection: If there are multiple faces detected
-        #     # we dont register and throw an exception
-        #     try:
-        #         bboxes = self.face_detector.detect_faces(image=image,
-        #                                 conf_threshold=self.face_detection_threshold)
-        #     except Exception as exc:
-        #         raise exc
-        #     # im = image.copy()
-        #     # print(bboxes)
-        #     # draw_bounding_box(im, bboxes[0])
-            
-        #     # draw_bounding_box(im, bboxes[1], color=(255,0,0))
-            
-        #     # cv2.imwrite('t1.jpg', im)
-        #     # In order to register a person, we should make sure
-        #     # only one face is present
-        #     # if len(bboxes) != 1:
-        #     #     raise NoFaceDetected if not len(bboxes) else MultipleFacesDetected
-        #     bbox = bboxes[0]
-
-        # # Convert the image back to RGB to feed to dlib based models
-        # try:
-        #     image = convert_to_rgb(image=image)
-        # except InvalidImage:
-        #     raise InvalidImage
-
-        # print(bbox)
-        # draw_bounding_box(image, bbox, color=(255,0,0))
-            
-        # cv2.imwrite('data/faces/'+str(uuid.uuid4())+'.jpg', image)
-
         # Convert to dlib format rectangle
         bbox = convert_to_dlib_rectangle(bbox)
         # Get the facial landmark coordinates
@@ -261,10 +162,8 @@ class FaceRecognition:
         return np.linalg.norm(vector1 - vector2) 
 
 
-    
-
-
 if __name__ == "__main__":
+    ############ Sample Usage and Testing ################
     from face_recog.media_utils import load_image_path
 
     ob = FaceRecognition(model_loc='models', 
