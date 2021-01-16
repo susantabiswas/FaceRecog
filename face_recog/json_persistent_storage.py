@@ -13,8 +13,7 @@ from face_recog.persistent_storage import PersistentStorage
 from face_recog.exceptions import (DatabaseFileNotFound)
 from face_recog.validators import path_exists
 import os 
-import re 
-from typing import Dict 
+from typing import Dict, List 
 
 class JSONStorage(PersistentStorage):
     def __init__(self, db_loc:str='./data/facial_data_db.json'):
@@ -31,7 +30,6 @@ class JSONStorage(PersistentStorage):
         if os.path.exists(self.db_loc):
             # load the existing data
             data = self.get_all_data()
-
         try:
             # Add the new data and save to disk
             data.append(face_data)
@@ -41,7 +39,7 @@ class JSONStorage(PersistentStorage):
             raise exc
 
 
-    def get_all_data(self):
+    def get_all_data(self) -> List:
         # Data load will fail incase the file doesn't exist
         if not path_exists(self.db_loc):
             raise DatabaseFileNotFound
@@ -56,7 +54,7 @@ class JSONStorage(PersistentStorage):
             raise exc
 
     
-    def delete_data(self, face_id):
+    def delete_data(self, face_id:str) -> bool:
         # load and search if face id exists and 
         # save the data without that entry
         all_data = self.get_all_data()
@@ -78,7 +76,7 @@ class JSONStorage(PersistentStorage):
     def save_data(self, data=None):
         if data is not None:
             with open(self.db_loc, 'w') as f:
-                    json.dump(data, f)
+                json.dump(data, f)
 
 
     def sanitize_data(self, data):
