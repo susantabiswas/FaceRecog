@@ -29,6 +29,7 @@ import os
 # ===================================================
 class FaceDataStore:
     def __init__(self, persistent_data_loc='data/facial_data.json') -> None:
+
         # persistent storage handler
         self.db_handler = JSONStorage(persistent_data_loc)
         saved_data = []
@@ -44,16 +45,33 @@ class FaceDataStore:
             raise InvalidCacheInitializationData
 
     def add_facial_data(self, facial_data):
+        """Add facial data to the in memory cache and 
+        persistent storage. 
+
+        Args:
+            facial_data (Dict): {'id':str, 'encoding':tuple(), 'name':str}
+        """
         # add to cache and save on disk
         self.cache_handler.add_data(face_data=facial_data)
         self.db_handler.add_data(face_data=facial_data)
 
     def remove_facial_data(self, face_id=None):
+        """Delete facial record with the matching face id.
+
+        Args:
+            face_id (str, optional): Face data identifier. Defaults to None.
+        """
         self.cache_handler.delete_data(face_id=face_id)
         self.db_handler.delete_data(face_id=face_id)
     
     def get_all_facial_data(self):
-        # Since all face
+        """Returns data of all the registered faces.
+
+        Returns:
+            List[Dict]: List of facial data
+        """
+        # Cache data is returned since it is always up to date
+        # with CRUD operations.
         return self.cache_handler.get_all_data()
 
 
