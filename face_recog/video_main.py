@@ -7,20 +7,23 @@ on video or webcam feed.
 
 Usage: python -m face_recog.video_main'''
 # ===================================================
-from face_recog.face_detection_dlib import FaceDetectorDlib
-from face_recog.validators import path_exists
-import traceback
-from face_recog.exceptions import NoNameProvided, PathNotFound
-from face_recog.media_utils import (convert_to_rgb, draw_annotation,
-                                    draw_bounding_box, get_video_writer)
-from face_recog.face_detection_opencv import FaceDetectorOpenCV
-from face_recog.face_recognition import FaceRecognition
-from face_recog.face_detection_mtcnn import FaceDetectorMTCNN
-import cv2
 import sys
 import time
+import traceback
+from typing import Dict, List
+
+import cv2
 import numpy as np
-from typing import List, Dict                   
+
+from face_recog.exceptions import NoNameProvided, PathNotFound
+from face_recog.face_detection_dlib import FaceDetectorDlib
+from face_recog.face_detection_mtcnn import FaceDetectorMTCNN
+from face_recog.face_detection_opencv import FaceDetectorOpenCV
+from face_recog.face_recognition import FaceRecognition
+from face_recog.media_utils import (convert_to_rgb, draw_annotation,
+                                    draw_bounding_box, get_video_writer)
+from face_recog.validators import path_exists
+
 
 class FaceRecognitionVideo:
     def __init__(self, face_detector:str='dlib', 
