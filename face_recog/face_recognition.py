@@ -76,9 +76,8 @@ class FaceRecognition:
             if bbox is None:    
                 bboxes = self.face_detector.detect_faces(image=image)
                 if len(bboxes) == 0:
-                    raise FaceMissing
+                    raise NoFaceDetected
                 bbox = bboxes[0]
-            
             face_encoding = self.get_facial_fingerprint(image, bbox)
         
             # Convert the numpy array to normal python float list
@@ -116,7 +115,8 @@ class FaceRecognition:
 
         if bboxes is None:    
             bboxes = self.face_detector.detect_faces(image=image)
-        
+            if len(bboxes) == 0:
+                raise NoFaceDetected
         # Load the data of existing registered faces
         # compare using the metric the closest match
         all_facial_data = self.datastore.get_all_facial_data()
@@ -143,7 +143,7 @@ class FaceRecognition:
         bbox = convert_to_dlib_rectangle(bbox)
         # Get the facial landmark coordinates
         face_keypoints = self.keypoints_detector(image, bbox)
-
+        
         # Compute the 128D vector that describes the face in an img identified by
         # shape. In general, if two face descriptor vectors have a Euclidean
         # distance between them less than 0.6 then they are from the same
@@ -159,7 +159,7 @@ class FaceRecognition:
 
 
     def euclidean_distance(self, vector1, vector2):
-        return np.linalg.norm(vector1 - vector2) 
+        return np.linalg.norm(np.array(vector1) - np.array(vector2)) 
 
 
 if __name__ == "__main__":
@@ -168,7 +168,7 @@ if __name__ == "__main__":
 
     ob = FaceRecognition(model_loc='models', 
                 persistent_data_loc='data/facial_data.json',
-                face_detector='mtcnn')
+                face_detector='dlib')
     img1 = load_image_path('data/sample/1.jpg')
     img2 = load_image_path('data/sample/2.jpg')
     img3 = load_image_path('data/sample/sagar.jpg')
@@ -177,24 +177,24 @@ if __name__ == "__main__":
     # data1 = ob.register_face(image=img1, name='Test1')
     # data2 = ob.register_face(image=img2, name='Test2')
     
-    # print(data1)
+    # # print(data1)
     # print(data2)
 
-    # print('Match:', ob.euclidean_distance(data1['encoding'], data2['encoding']))
+    # print('Match:', ob.euclidean_distance(list(data1['encoding']), list(data2['encoding'])))
     
-    ob.register_face(image=img1, name='Test1')
-    ob.register_face(image=img2, name='Test2')
-    ob.register_face(image=img4, name='Vidit')
-    ob.register_face(image=img3, name='Sagar')
+    # ob.register_face(image=img1, name='Test1')
+    # ob.register_face(image=img2, name='Test2')
+    # ob.register_face(image=img4, name='Vidit')
+    # ob.register_face(image=img3, name='Sagar')
 
-    fd = FaceDetectorMTCNN()
-    fd2 = FaceDetectorOpenCV()
-    print('FD',fd.detect_faces(img3))
-    print('FD2',fd2.detect_faces(img3))
+    # fd = FaceDetectorMTCNN()
+    # fd2 = FaceDetectorOpenCV()
+    # print('FD',fd.detect_faces(img3))
+    # print('FD2',fd2.detect_faces(img3))
     
-    print('Attempting face recognition...')
-    match, dist = ob.recognize_face(img5, check_face_count=True)
-    print(match['name'] if match and 'name' in match else '', dist)
+    # print('Attempting face recognition...')
+    # match, dist = ob.recognize_face(img5, check_face_count=True)
+    # print(match['name'] if match and 'name' in match else '', dist)
 
     os.remove('data/facial_data.json')
 
