@@ -26,15 +26,26 @@ class FaceDetectorDlib(FaceDetector):
     cnn_model_filename = 'mmod_human_face_detector.dat'
     
     def __init__(self, model_loc='models', model_type='hog'):
+        """Constructor
+
+        Args:
+            model_loc (str, optional): Path where the models are saved. 
+                Defaults to 'models'.
+            model_type (str, optional): Supports HOG and MMOD based detectors. 
+                Defaults to 'hog'.
+
+        Raises:
+            ModelFileMissing: Raised when model file is not found       
+        """
         try:
             # load the model
             if model_type == 'hog':
                 self.face_detector = dlib.get_frontal_face_detector()
             else:
+                # MMOD model
                 cnn_model_path = os.path.join(model_loc, FaceDetectorDlib.cnn_model_filename) 
                 if not os.path.exists(cnn_model_path):
                     raise ModelFileMissing
-                # MMOD model
                 self.face_detector = dlib.cnn_face_detection_model_v1(cnn_model_path)
             self.model_type = model_type
             print('[INFO] dlib: {} face detector loaded...'.format(self.model_type))
@@ -42,13 +53,28 @@ class FaceDetectorDlib(FaceDetector):
             raise e
 
 
-    def detect_faces(self, image, num_upscaling:int=1)->List[List[int]]:
+    def detect_faces(self, image, num_upscaling:int=1) -> List[List[int]]:
+        """Performs facial detection on an image. Works best with
+        RGB image. Uses a dlib based detector either HOG or MMOD.
+
+        Args:
+            image (numpy array): 
+            num_upscaling (int, optional): Number of times to upscale
+            while detecting faces. Defaults to 1.
+
+        Raises:
+            InvalidImage: When the image is either None or
+            with wrong number of channels.
+
+        Returns:
+            List[List[int]]: List of bounding box coordinates
+        """
         if not is_valid_img(image):
             raise InvalidImage
-        
         return [self.dlib_rectangle_to_list(bbox) for bbox\
                 in self.face_detector(image, num_upscaling)]
         
+
     def dlib_rectangle_to_list(self, dlib_bbox):
         """Converts a dlib rectangle / mmod rectangle to 
         List(top left x, top left y, bottom right x, bottom right y)
@@ -69,6 +95,7 @@ class FaceDetectorDlib(FaceDetector):
         x2, y2 = x1 + width, y1 + height
         
         return [x1, y1, x2, y2]
+
 
     def __repr__(self):
         return "FaceDetectorDlib"
