@@ -10,7 +10,7 @@ Usage: python -m face_recog.face_detection_opencv
 '''
 # ===================================================
 
-from face_recog.media_utils import draw_bounding_box
+from face_recog.media_utils import convert_to_rgb, draw_bounding_box
 from face_recog.validators import is_valid_img
 from face_recog.exceptions import ModelFileMissing, InvalidImage
 import cv2
@@ -21,7 +21,7 @@ from face_recog.face_detector import FaceDetector
 class FaceDetectorOpenCV(FaceDetector):
     def __init__(self, model_loc='./models',
                 crop_forehead:bool=True,
-                shrink_ratio:int=0.2):
+                shrink_ratio:int=0.1):
         # Model file and associated config path
         model_path = os.path.join(model_loc,
                             'opencv_face_detector_uint8.pb')
@@ -106,15 +106,12 @@ class FaceDetectorOpenCV(FaceDetector):
 if __name__ == "__main__":
     # Sample Usage
     ob = FaceDetectorOpenCV(model_loc='models')
-    img = cv2.imread('data/sample/sagar.jpg')
-    h, w = img.shape[:2]
-    print(ob.is_valid_bbox([2, 2, 10, 10], 11, 10))
+    img = cv2.imread('data/sample/2.jpg')
+   
     # import numpy as np
     # img = np.zeros((100,100,5), dtype='float32')
-    bboxes = ob.detect_faces(img, conf_threshold=0.99)
-    # filter false bboxes
-    bboxes = list(filter(lambda bbox: ob.is_valid_bbox(bbox, h, w),
-                         bboxes))
+    bboxes = ob.detect_faces(convert_to_rgb(img), conf_threshold=0.99)
+
     print(bboxes)
     print(ob)
     print(img.shape)
