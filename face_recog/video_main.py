@@ -41,6 +41,7 @@ class FaceRecognitionVideo:
         elif face_detector == "dlib":
             self.face_detector = FaceDetectorDlib()
 
+    
     def recognize_face_video(self, video_path=None,
                 detection_interval:int=15, 
                 save_output:bool=False,
@@ -84,8 +85,8 @@ class FaceRecognitionVideo:
                     # print(matches)
                     for face_bbox, match, dist in matches:
                         name = match['name'] if match is not None else 'Unknown'
-                        match_dist = '{:.2f}'.format(dist) if dist < 1000 else 'INF'
-                        name = name + ', Dist: {}'.format(match_dist)
+                        # match_dist = '{:.2f}'.format(dist) if dist < 1000 else 'INF'
+                        # name = name + ', Dist: {}'.format(match_dist)
                 
                         if verbose:
                             # draw face labels
@@ -182,8 +183,8 @@ if __name__ == "__main__":
     import os 
 
     ob = FaceRecognitionVideo(face_detector='dlib')
-    # ob.recognize_face_video(video_path=None, 
-    #         detection_interval=1, save_output=True, preview=True)
+    ob.recognize_face_video(video_path=None, 
+            detection_interval=1, save_output=True, preview=True)
     # register a face
     # ob.register_face_webcam(name="Susanta")
 
@@ -191,17 +192,17 @@ if __name__ == "__main__":
     #####################################
     # Register faces for videos
     
-    ob.register_face_path(img_path='data/sample/sagar2.jpg',name="Sagar")
-    ob.register_face_path(img_path='data/sample/suhani.jpg',name="Suhani")
-    ob.register_face_path(img_path='data/sample/vidit.jpg',name="Vidit")
-    ob.register_face_path(img_path='data/sample/amrutha.jpg',name="Amrutha")
+    # ob.register_face_path(img_path='data/sample/sagar2.jpg',name="Sagar")
+    # ob.register_face_path(img_path='data/sample/suhani.jpg',name="Suhani")
+    # ob.register_face_path(img_path='data/sample/vidit.jpg',name="Vidit")
+    # ob.register_face_path(img_path='data/sample/amrutha.jpg',name="Amrutha")
     
-    ob.recognize_face_video(video_path='data/test.mkv', 
-            detection_interval=1, save_output=True, preview=True)
+    # ob.recognize_face_video(video_path='data/test.mkv', 
+    #         detection_interval=1, save_output=True, preview=True)
     
     
-    if path_exists('data/facial_data.json'):
-        os.remove('data/facial_data.json')
-    print('[INFO] Test DB file deleted...')
+    # if path_exists('data/facial_data.json'):
+    #     os.remove('data/facial_data.json')
+    # print('[INFO] Test DB file deleted...')
 
     ###########################################
