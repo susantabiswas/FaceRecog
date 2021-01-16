@@ -22,6 +22,19 @@ class FaceDetectorOpenCV(FaceDetector):
     def __init__(self, model_loc='./models',
                 crop_forehead:bool=True,
                 shrink_ratio:int=0.1):
+        """Constructor
+
+        Args:
+            model_loc (str, optional): Path where the models are saved. 
+                Defaults to 'models'.
+            crop_forehead (bool, optional): Whether to trim the 
+                forehead in the detected facial ROI. Certain datasets 
+                like Dlib models are trained on cropped images without forehead.
+                It can useful in those scenarios.
+                Defaults to True.
+            shrink_ratio (float, optional): Amount of height to shrink 
+                Defaults to 0.1
+        """
         # Model file and associated config path
         model_path = os.path.join(model_loc,
                             'opencv_face_detector_uint8.pb')
@@ -56,6 +69,17 @@ class FaceDetectorOpenCV(FaceDetector):
 
     def detect_faces(self, image, 
                     conf_threshold: float=0.7)->List[List[int]]:
+        """Performs facial detection on an image. Uses OpenCV DNN based face detector.
+        Args:
+            image (numpy array): 
+            conf_threshold (float, optional): Threshold confidence to consider
+        Raises:
+            InvalidImage: When the image is either None or
+            with wrong number of channels.
+
+        Returns:
+            List[List[int]]: List of bounding box coordinates
+        """
         if image is None:
             return []
         
@@ -91,6 +115,16 @@ class FaceDetectorOpenCV(FaceDetector):
 
 
     def is_valid_bbox(self, bbox, height, width):
+        """Checks if the bounding box exists in the image.
+
+        Args:
+            bbox (List[int]): Bounding box coordinates
+            height (int): 
+            width (int): 
+
+        Returns:
+            bool: Whether the bounding box is valid
+        """
         for idx in range(0, len(bbox), 2):
             if bbox[idx] < 0 or bbox[idx] >= width:
                 return False
