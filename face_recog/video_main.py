@@ -71,10 +71,10 @@ class FaceRecognitionVideo:
                 # If frame comes from webcam, flip it so it looks like a mirror.
                 if video_path == 0:
                     frame = cv2.flip(frame, 2)
-                frame = convert_to_rgb(frame)
-
+                
                 if frame_num % detection_interval == 0:
-                    smaller_frame = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
+                    smaller_frame = convert_to_rgb(
+                                        cv2.resize(frame, (0, 0), fx=0.5, fy=0.5))
                     
                     matches = self.face_recognizer\
                                     .recognize_faces(
