@@ -1,1 +1,0 @@
-put the images here that you want to register using add_user_img_path(user_db, FRmodel, name, img_path) function 

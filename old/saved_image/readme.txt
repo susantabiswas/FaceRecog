@@ -1,1 +1,0 @@
-a single image from webcam is saved here
