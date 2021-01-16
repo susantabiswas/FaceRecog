@@ -18,6 +18,7 @@ def test_load_image_path():
     """ Check if exception is thrown when an invalid array is given"""
     path = 'data/sample/1.jpg'
     img = cv2.imread(path)
+    img = convert_to_rgb(img)
     loaded_img = load_image_path(path)
     assert np.all(loaded_img == img) == True
 
