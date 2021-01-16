@@ -26,6 +26,17 @@ class FaceDetectorMTCNN(FaceDetector):
     def __init__(self,
                 crop_forehead:bool=True,
                 shrink_ratio:int=0.1):
+        """Constructor
+
+        Args:
+            crop_forehead (bool, optional): Whether to trim the 
+                forehead in the detected facial ROI. Certain datasets 
+                like Dlib models are trained on cropped images without forehead.
+                It can useful in those scenarios.
+                Defaults to True.
+            shrink_ratio (float, optional): Amount of height to shrink 
+                Defaults to 0.1
+        """
         try:
             # load the model
             self.face_detector = MTCNN()
@@ -38,6 +49,17 @@ class FaceDetectorMTCNN(FaceDetector):
 
     def detect_faces(self, image, 
                     conf_threshold: float=0.7)->List[List[int]]:
+        """Performs facial detection on an image. Uses MTCNN.
+        Args:
+            image (numpy array): 
+            conf_threshold (float, optional): Threshold confidence to consider
+        Raises:
+            InvalidImage: When the image is either None or
+            with wrong number of channels.
+
+        Returns:
+            List[List[int]]: List of bounding box coordinates
+        """
         if not is_valid_img(image):
             raise InvalidImage
          
@@ -45,11 +67,12 @@ class FaceDetectorMTCNN(FaceDetector):
         detections = self.face_detector.detect_faces(image)
         # Bounding box coordinates of faces in image
         bboxes = []
-        for idx, detection in enumerate(detections):
+        for _, detection in enumerate(detections):
             conf = detection['confidence']
             if conf >= conf_threshold:
                 x, y, w, h = detection['box']
                 x1, y1, x2, y2 = x, y, x+ w, y + h
+
                 if self.crop_forehead:
                     y1 = y1 + int(h * self.shrink_ratio)
                 bboxes.append([x1, y1, x2, y2])
@@ -58,6 +81,20 @@ class FaceDetectorMTCNN(FaceDetector):
 
 
     def dlib_face_crop(self, bbox, shrink_ratio:int=0.2):
+        """
+            Crops an image in dlib styled facial ROI.
+            Args:
+                crop_forehead (bool, optional): Whether to trim the 
+                    forehead in the detected facial ROI. Certain datasets 
+                    like Dlib models are trained on cropped images without forehead.
+                    It can useful in those scenarios.
+                    Defaults to True.
+                shrink_ratio (float, optional): Amount of height to shrink 
+                    Defaults to 0.1. 
+
+            Returns:
+                List[List[int]]: List of bounding box coordinates
+        """
         x1, y1, x2, y2 = bbox
         h, w = y2 - y1, x2 - x1
         # Shrink the height of box
