@@ -24,9 +24,11 @@ def convert_to_dlib_rectangle(bbox):
                          bbox[2], bbox[3])
 
 
-def load_image_path(img_path):
+def load_image_path(img_path, mode='rgb'):
     try:
         img = cv2.imread(img_path)
+        if mode == 'rgb':
+            return convert_to_rgb(img)
         return img
     except Exception as exc:
         raise exc
