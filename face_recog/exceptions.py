@@ -76,3 +76,20 @@ class NoNameProvided(Exception):
     """
     def __init__(self) -> None:
         self.message = "Please provide a name for registering face!!"
+
+
+class PathNotFound(Exception):
+    """Raised when the path doesn't exist
+    Attributes:
+        message: (str) Exception message
+    """
+    def __init__(self) -> None:
+        self.message = "Path couldn't be found. Please check!!"
+
+class FaceMissing(Exception):
+    """Raised when face is not found in an image
+    Attributes:
+        message: (str) Exception message
+    """
+    def __init__(self) -> None:
+        self.message = "Face not found!!"
