@@ -23,23 +23,25 @@ from mtcnn import MTCNN
 import cv2
 
 class FaceDetectorMTCNN(FaceDetector):
-    def __init__(self):
+    def __init__(self,
+                crop_forehead:bool=True,
+                shrink_ratio:int=0.2):
         try:
             # load the model
             self.face_detector = MTCNN()
+            self.crop_forehead = crop_forehead
+            self.shrink_ratio = shrink_ratio
+            print('[INFO] MTCNN face detector loaded...')
         except Exception as e:
             raise e
 
 
     def detect_faces(self, image, 
                     conf_threshold: float=0.7)->List[List[int]]:
-        if image is None:
-            return []
-        
         if not is_valid_img(image):
             raise InvalidImage
         # convert to RGB
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        # image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         height, width = image.shape[:2]
         
         # Do a forward propagation with the blob created from input img
@@ -50,9 +52,20 @@ class FaceDetectorMTCNN(FaceDetector):
             conf = detection['confidence']
             if conf >= conf_threshold:
                 x, y, w, h = detection['box']
-                bboxes.append([x, y, x + w, y + h])
+                x1, y1, x2, y2 = x, y, x+ w, y + h
+                if self.crop_forehead:
+                    y1 = y1 + int(h * self.shrink_ratio)
+                bboxes.append([x1, y1, x2, y2])
 
         return bboxes
+
+
+    def dlib_face_crop(self, bbox, shrink_ratio:int=0.2):
+        x1, y1, x2, y2 = bbox
+        h, w = y2 - y1, x2 - x1
+        # Shrink the height of box
+        shift_y = int(shrink_ratio * h)
+        return [x1, y1 + shift_y, x2, y2]
 
 
     def __repr__(self):
@@ -63,12 +76,18 @@ if __name__ == "__main__":
     
     # Sample Usage
     ob = FaceDetectorMTCNN()
-    img = cv2.imread('data/sample/test.jpg')
+    img = cv2.imread('data/sample/1.jpg')
 
     # import numpy as np
     # img = np.zeros((100,100,5), dtype='float32')
     bbox = ob.detect_faces(img)
+    
     print(bbox)
     print(ob)
-    cv2.imshow('Test',draw_bounding_box(img, bbox[0]))
+    x1, y1, x2, y2 = bbox[0]
+    h, w = y2 - y1, x2 - x1
+    shift_y = int(0.20 * h)
+    bbox = [x1, y1 + shift_y, x2, y2]
+    print(bbox)
+    cv2.imshow('Test',draw_bounding_box(img, bbox))
     cv2.waitKey(0)
