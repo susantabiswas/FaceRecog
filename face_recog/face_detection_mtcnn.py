@@ -13,7 +13,7 @@ Ref: https://github.com/ipazc/mtcnn
 '''
 # ===================================================
 
-from face_recog.media_utils import draw_bounding_box
+from face_recog.media_utils import convert_to_rgb, draw_bounding_box
 from face_recog.validators import is_valid_img
 from face_recog.exceptions import InvalidImage
 import os  
@@ -25,7 +25,7 @@ import cv2
 class FaceDetectorMTCNN(FaceDetector):
     def __init__(self,
                 crop_forehead:bool=True,
-                shrink_ratio:int=0.2):
+                shrink_ratio:int=0.1):
         try:
             # load the model
             self.face_detector = MTCNN()
@@ -40,10 +40,7 @@ class FaceDetectorMTCNN(FaceDetector):
                     conf_threshold: float=0.7)->List[List[int]]:
         if not is_valid_img(image):
             raise InvalidImage
-        # convert to RGB
-        # image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        height, width = image.shape[:2]
-        
+         
         # Do a forward propagation with the blob created from input img
         detections = self.face_detector.detect_faces(image)
         # Bounding box coordinates of faces in image
@@ -76,11 +73,11 @@ if __name__ == "__main__":
     
     # Sample Usage
     ob = FaceDetectorMTCNN()
-    img = cv2.imread('data/sample/1.jpg')
+    img = cv2.imread('data/sample/2.jpg')
 
     # import numpy as np
     # img = np.zeros((100,100,5), dtype='float32')
-    bbox = ob.detect_faces(img)
+    bbox = ob.detect_faces(convert_to_rgb(img))
     
     print(bbox)
     print(ob)
