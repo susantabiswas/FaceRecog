@@ -9,7 +9,9 @@ import math
 class TestFaceRecognition:
     def setup_class(self) -> None:
         self.persistent_db_loc = 'data/test_facial_data.json'
-        self.face_recognizer = FaceRecognition(model_loc='models')
+        self.face_recognizer = FaceRecognition(model_loc='models', 
+                            persistent_data_loc=self.persistent_db_loc,
+                            face_detector='dlib')
 
     def teardown_method(self):
         if path_exists(self.persistent_db_loc):
@@ -23,13 +25,16 @@ class TestFaceRecognition:
                  == True
 
 
-    def test_recognize_face(self, img1_data, img2_data):
+    def test_recognize_face(self, img1_data, img2_data, img2_facial_data):
         ob = FaceRecognition(model_loc='models', 
-                persistent_data_loc=self.persistent_db_loc)
+                persistent_data_loc=self.persistent_db_loc,
+                face_detector='dlib')
         
-        ob.register_face(image=img1_data, name='Test1')
-        match, dist = ob.recognize_face(img2_data)
-        assert match['name'] == "Test1" and math.isclose(dist, 0.3834652785779021)
+        ob.register_face(image=img2_data, name='Test2')
+        matches = ob.recognize_faces(img1_data)
+        bbox, match, dist = matches[0]
+        assert match['name'] == "Test2" and \
+                math.isclose(dist, 0.3890867234873485)
 
     def test_save_facial_data(self, face_data2, simple_cache_data2):
         ob = FaceRecognition(model_loc='models', 
@@ -40,9 +45,11 @@ class TestFaceRecognition:
                     key= lambda x: x["name"]) == \
                 sorted([simple_cache_data2])
 
-    def test_get_facial_fingerprint(self, img2_data, img2_encoding):
+    def test_get_facial_fingerprint(self, img2_data, 
+                    img2_encoding, img2_facebox_dlib_hog):
         facial_encoding = self.face_recognizer \
-                            .get_facial_fingerprint(img2_data)
+                            .get_facial_fingerprint(img2_data,
+                                         img2_facebox_dlib_hog[0])
         # float comparison
         assert np.allclose(facial_encoding, img2_encoding) \
                  == True
@@ -51,7 +58,7 @@ class TestFaceRecognition:
     def test_recognize_face_missing_face(self):
         """ Check if exception is thrown when no face is visible"""
         # create a dummy image
-        img = np.zeros((100, 100, 3), dtype='float32')
+        img = np.zeros((100, 100, 3), dtype=np.uint8)
         with pytest.raises(NoFaceDetected):
             self.face_recognizer.register_face(image=img, name="test1")
 
@@ -61,7 +68,7 @@ class TestFaceRecognition:
         # create a dummy image
         img = np.zeros((100, 100, 5), dtype='float32')
         with pytest.raises(InvalidImage):
-            self.face_recognizer.register_face(img, "test1")
+            self.face_recognizer.register_face(img, "dummy")
 
 
     def test_euclidean_distance(self):
