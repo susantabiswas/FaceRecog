@@ -16,7 +16,6 @@ Ref: https://github.com/ipazc/mtcnn
 from face_recog.media_utils import convert_to_rgb, draw_bounding_box
 from face_recog.validators import is_valid_img
 from face_recog.exceptions import InvalidImage
-import os  
 from typing import List
 from face_recog.face_detector import FaceDetector
 from mtcnn import MTCNN
@@ -48,7 +47,7 @@ class FaceDetectorMTCNN(FaceDetector):
 
 
     def detect_faces(self, image, 
-                    conf_threshold: float=0.7)->List[List[int]]:
+                    conf_threshold: float=0.7) -> List[List[int]]:
         """Performs facial detection on an image. Uses MTCNN.
         Args:
             image (numpy array): 
@@ -72,7 +71,7 @@ class FaceDetectorMTCNN(FaceDetector):
             if conf >= conf_threshold:
                 x, y, w, h = detection['box']
                 x1, y1, x2, y2 = x, y, x+ w, y + h
-
+                # Trim forehead area to match dlib style facial ROI
                 if self.crop_forehead:
                     y1 = y1 + int(h * self.shrink_ratio)
                 bboxes.append([x1, y1, x2, y2])
@@ -80,7 +79,7 @@ class FaceDetectorMTCNN(FaceDetector):
         return bboxes
 
 
-    def dlib_face_crop(self, bbox, shrink_ratio:int=0.2):
+    def dlib_face_crop(self, bbox:List[int], shrink_ratio:int=0.2) -> List[int]:
         """
             Crops an image in dlib styled facial ROI.
             Args:

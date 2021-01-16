@@ -11,13 +11,12 @@ Ref: http://dlib.net/cnn_face_detector.py.html
 '''
 # ===================================================
 
-from face_recog.media_utils import convert_to_rgb, draw_bounding_box
+from face_recog.media_utils import convert_to_rgb
 from face_recog.validators import is_valid_img
 from face_recog.exceptions import InvalidImage, ModelFileMissing
 import os  
 from typing import List
 from face_recog.face_detector import FaceDetector
-from mtcnn import MTCNN
 import cv2
 
 import dlib 
@@ -25,7 +24,7 @@ import dlib
 class FaceDetectorDlib(FaceDetector):
     cnn_model_filename = 'mmod_human_face_detector.dat'
     
-    def __init__(self, model_loc='models', model_type='hog'):
+    def __init__(self, model_loc:str='models', model_type:str='hog'):
         """Constructor
 
         Args:
@@ -75,7 +74,7 @@ class FaceDetectorDlib(FaceDetector):
                 in self.face_detector(image, num_upscaling)]
         
 
-    def dlib_rectangle_to_list(self, dlib_bbox):
+    def dlib_rectangle_to_list(self, dlib_bbox) -> List[int]:
         """Converts a dlib rectangle / mmod rectangle to 
         List(top left x, top left y, bottom right x, bottom right y)
 
