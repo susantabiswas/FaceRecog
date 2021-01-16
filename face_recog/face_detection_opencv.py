@@ -10,13 +10,16 @@ Usage: python -m face_recog.face_detection_opencv
 '''
 # ===================================================
 
+import os
+from typing import List
+
+import cv2
+
+from face_recog.exceptions import InvalidImage, ModelFileMissing
+from face_recog.face_detector import FaceDetector
 from face_recog.media_utils import convert_to_rgb, draw_bounding_box
 from face_recog.validators import is_valid_img
-from face_recog.exceptions import ModelFileMissing, InvalidImage
-import cv2
-import os  
-from typing import List
-from face_recog.face_detector import FaceDetector
+
 
 class FaceDetectorOpenCV(FaceDetector):
     def __init__(self, model_loc='./models',
@@ -34,6 +37,8 @@ class FaceDetectorOpenCV(FaceDetector):
                 Defaults to True.
             shrink_ratio (float, optional): Amount of height to shrink 
                 Defaults to 0.1
+        Raises:
+            ModelFileMissing: Raised when model file is not found   
         """
         # Model file and associated config path
         model_path = os.path.join(model_loc,

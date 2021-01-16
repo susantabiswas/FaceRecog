@@ -15,19 +15,22 @@ https://github.com/davisking/dlib-models
 '''
 # ===================================================
 
+import os
+import uuid
+from typing import Dict, List, Tuple
+
+import dlib
+import numpy as np
+
+from face_recog.exceptions import (FaceMissing, InvalidImage, ModelFileMissing,
+                                   NoFaceDetected, NoNameProvided)
+from face_recog.face_data_store import FaceDataStore
 from face_recog.face_detection_dlib import FaceDetectorDlib
 from face_recog.face_detection_mtcnn import FaceDetectorMTCNN
-from face_recog.face_data_store import FaceDataStore
-from face_recog.validators import is_valid_img, path_exists
-from face_recog.exceptions import (FaceMissing, InvalidImage, ModelFileMissing, 
-            NoFaceDetected, NoNameProvided)
 from face_recog.face_detection_opencv import FaceDetectorOpenCV
 from face_recog.media_utils import convert_to_dlib_rectangle
-import numpy as np
-import uuid 
-import dlib 
-import os
-from typing import List, Dict, Tuple
+from face_recog.validators import is_valid_img, path_exists
+
 
 class FaceRecognition:
     keypoints_model_path = 'shape_predictor_5_face_landmarks.dat'
@@ -37,7 +40,20 @@ class FaceRecognition:
                 persistent_data_loc='data/facial_data.json',
                 face_detection_threshold:int=0.99,
                 face_detector:str='dlib') -> None:
+        """Constructor
 
+        Args:
+            model_loc (str, optional): Path where model files are saved. Defaults to "./models".
+            persistent_data_loc (str, optional): Path to save the persistence storage file.
+                Defaults to 'data/facial_data.json'.
+            face_detection_threshold (int, optional): Threshold facial model confidence to consider a detection.
+                Defaults to 0.99.
+            face_detector (str, optional): Type of face detector to use. Options:
+                Dlib-HOG and MMOD, MTCNN, OpenCV CNN. Defaults to 'dlib'.
+
+        Raises:
+            ModelFileMissing: Raised when model file is not found   
+        """
         keypoints_model_path = os.path.join(model_loc, 
                                         FaceRecognition.keypoints_model_path)
         face_recog_model_path = os.path.join(model_loc, 
@@ -62,7 +78,23 @@ class FaceRecognition:
 
     def register_face(self, image=None, name:str=None, 
                     bbox:List[int]=None):
-        """ Registers a single face"""
+        """Method to register a face via the facial encoding.
+        Siamese neural network is used to generate 128 numbers 
+        for a given facial region. These encodings can be used to identify a 
+        facial ROI for identification later.
+
+        Args:
+            image (numpy array, optional): Defaults to None.
+            name (str, optional): Name to associate with the face. Defaults to None.
+            bbox (List[int], optional): Facial ROI bounding box. Defaults to None.
+
+        Raises:
+            NoNameProvided: 
+            NoFaceDetected: 
+
+        Returns:
+            Dict: Facial encodings along with an unique identifier and name
+        """
         
         if not is_valid_img(image) or name is None:
             raise NoNameProvided if name is None else InvalidImage
@@ -94,20 +126,50 @@ class FaceRecognition:
     
 
     def save_facial_data(self, facial_data:Dict=None) -> bool:
+        """Saves facial data to cache and persistent storage
+
+        Args:
+            facial_data (Dict, optional): [description]. Defaults to None.
+
+        Returns:
+            bool: status of saving
+        """
         if facial_data is not None:
             self.datastore.add_facial_data(facial_data=facial_data)
             return True
         return False
 
     def get_registered_faces(self) -> List[Dict]:
+        """Returns the list of all facial data of all registered users
+
+        Returns:
+            List[Dict]: List of facial data
+        """
         return self.datastore.get_all_facial_data()
 
 
     def recognize_faces(self, image, threshold:float=0.6, 
                         bboxes:List[List[int]]=None):
-        """ Finds a matching face for the give in the input
-        image. The input image should be cropped to contain
-        only one face and then sent to this method."""
+        """Finds matching registered users for the 
+        face(s) in the input image. The input image should be cropped to contain
+        only one face and then sent to this method.
+
+        Args:
+            image (numpy array): [description]
+            threshold (float, optional): Max threshold euclidean distance to
+            consider two people to be a match. Defaults to 0.6.
+            bboxes (List[List[int]], optional): List of facial ROI bounding box. 
+                If this is None, then face detection is performed on the image
+                and facial recognition is run for all the detected faces, otherwise
+                if a bounding box is sent, then facial recognition is only
+                done for that bounding box. Defaults to None.
+
+        Raises:
+            NoFaceDetected: [description]
+
+        Returns:
+            List[Tuple]: List of information of matching 
+        """
         if image is None:
             return InvalidImage
         image = image.copy()
@@ -136,6 +198,19 @@ class FaceRecognition:
 
 
     def get_facial_fingerprint(self, image, bbox:List[int]=None) -> List[float]:
+        """Driver method for generating the facial encoding for an input image.
+            Input image bbox -> facial keypoints detection -> keypoints used for
+            face alignment -> Siamese NN -> Encoding
+        Args:
+            image (numpy array): [description]
+            bbox (List[int], optional): List of facial ROI bounding box. Defaults to None.
+
+        Raises:
+            FaceMissing: [description]
+
+        Returns:
+            List[float]: Facial Encoding
+        """
         if bbox is None:
             raise FaceMissing
         # Convert to dlib format rectangle
@@ -152,12 +227,31 @@ class FaceRecognition:
 
 
     def get_face_encoding(self, image, face_keypoints:List):
+        """Method for generating the facial encoding for 
+            a face in an input image.
+
+        Args:
+            image (numpy array): [description]
+            face_keypoints (List): [description]
+
+        Returns:
+            [type]: [description]
+        """
         encoding = self.face_recognizor\
                     .compute_face_descriptor(image, face_keypoints, 1)
         return np.array(encoding)
 
 
     def euclidean_distance(self, vector1:Tuple, vector2:Tuple):
+        """Computes Euclidean distance between two vectors
+
+        Args:
+            vector1 (Tuple): [description]
+            vector2 (Tuple): [description]
+
+        Returns:
+            [type]: [description]
+        """
         return np.linalg.norm(np.array(vector1) - np.array(vector2)) 
 
 
