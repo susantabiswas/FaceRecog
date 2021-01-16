@@ -19,13 +19,17 @@ from typing import List
 from face_recog.face_detector import FaceDetector
 
 class FaceDetectorOpenCV(FaceDetector):
-    def __init__(self, model_loc='./models'):
+    def __init__(self, model_loc='./models',
+                crop_forehead:bool=True,
+                shrink_ratio:int=0.2):
         # Model file and associated config path
         model_path = os.path.join(model_loc,
                             'opencv_face_detector_uint8.pb')
         config_path = os.path.join(model_loc,
                             'opencv_face_detector.pbtxt')
-
+        
+        self.crop_forehead = crop_forehead
+        self.shrink_ratio = shrink_ratio
         if not os.path.exists(model_path) or \
             not os.path.exists(config_path):
             raise ModelFileMissing
@@ -74,10 +78,26 @@ class FaceDetectorOpenCV(FaceDetector):
                 x2 = int(detections[0, 0, idx, 5] * width)
                 y2 = int(detections[0, 0, idx, 6] * height)
 
-                bboxes.append([x1, y1, x2, y2])
+                if self.crop_forehead:
+                    y1 = y1 + int(height * self.shrink_ratio)
+                # openCv detector can give a lot of false bboxes
+                # when the image is a zoomed in face / cropped face
+                # This will get rid of atleast few, still there can be other
+                # wrong detections present!
+                if self.is_valid_bbox([x1, y1, x2, y2], height, width):
+                    bboxes.append([x1, y1, x2, y2])
 
         return bboxes
 
+
+    def is_valid_bbox(self, bbox, height, width):
+        for idx in range(0, len(bbox), 2):
+            if bbox[idx] < 0 or bbox[idx] >= width:
+                return False
+        for idx in range(1, len(bbox), 2):
+            if bbox[idx] < 0 or bbox[idx] >= height:
+                return False
+        return True
 
     def __repr__(self):
         return "FaceDetectorOPENCV <model_loc=str>"
@@ -86,13 +106,18 @@ class FaceDetectorOpenCV(FaceDetector):
 if __name__ == "__main__":
     # Sample Usage
     ob = FaceDetectorOpenCV(model_loc='models')
-    img = cv2.imread('data/sample/test.jpg')
-
+    img = cv2.imread('data/sample/sagar.jpg')
+    h, w = img.shape[:2]
+    print(ob.is_valid_bbox([2, 2, 10, 10], 11, 10))
     # import numpy as np
     # img = np.zeros((100,100,5), dtype='float32')
-    bbox = ob.detect_faces(img, conf_threshold=0.99)
-    print(bbox)
+    bboxes = ob.detect_faces(img, conf_threshold=0.99)
+    # filter false bboxes
+    bboxes = list(filter(lambda bbox: ob.is_valid_bbox(bbox, h, w),
+                         bboxes))
+    print(bboxes)
     print(ob)
-
-    cv2.imshow('Test',draw_bounding_box(img, bbox[0]))
-    cv2.waitKey(0)
+    print(img.shape)
+    for bbox in bboxes:
+        cv2.imshow('Test',draw_bounding_box(img, bbox))
+        cv2.waitKey(0)
