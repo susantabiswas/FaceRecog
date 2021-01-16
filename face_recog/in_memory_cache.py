@@ -2,7 +2,7 @@
 # ===================================================
 # Author: Susanta Biswas
 # ===================================================
-'''Description: For handling data management in memory
+'''Description: Abstract class for handling data management in memory
  cache'''
 # ===================================================
 from abc import ABC, abstractmethod

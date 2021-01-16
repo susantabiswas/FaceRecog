@@ -18,19 +18,16 @@ https://github.com/davisking/dlib-models
 from face_recog.face_detection_dlib import FaceDetectorDlib
 from face_recog.face_detection_mtcnn import FaceDetectorMTCNN
 from face_recog.face_data_store import FaceDataStore
-from face_recog.validators import is_valid_img
-import cv2
+from face_recog.validators import is_valid_img, path_exists
 from face_recog.exceptions import (FaceMissing, InvalidImage, ModelFileMissing, 
-            NoFaceDetected, MultipleFacesDetected, NoNameProvided)
+            NoFaceDetected, NoNameProvided)
 from face_recog.face_detection_opencv import FaceDetectorOpenCV
-from face_recog.media_utils import (convert_to_rgb,
-                    convert_to_dlib_rectangle, draw_annotation, draw_bounding_box, get_facial_ROI)
+from face_recog.media_utils import convert_to_dlib_rectangle
 import numpy as np
 import uuid 
 import dlib 
-import sys
 import os
-
+from typing import List, Dict, Tuple
 
 class FaceRecognition:
     keypoints_model_path = 'shape_predictor_5_face_landmarks.dat'
@@ -45,7 +42,8 @@ class FaceRecognition:
                                         FaceRecognition.keypoints_model_path)
         face_recog_model_path = os.path.join(model_loc, 
                                         FaceRecognition.face_recog_model_path)
-
+        if not (path_exists(keypoints_model_path) or path_exists(face_recog_model_path)):
+            raise ModelFileMissing
         if face_detector == "opencv":
             self.face_detector = FaceDetectorOpenCV(model_loc=model_loc,
                                                     crop_forehead=True, 
@@ -62,8 +60,8 @@ class FaceRecognition:
         self.datastore = FaceDataStore(persistent_data_loc=persistent_data_loc)
 
 
-    def register_face(self, image=None, name=None, 
-                    bbox=None):
+    def register_face(self, image=None, name:str=None, 
+                    bbox:List[int]=None):
         """ Registers a single face"""
         
         if not is_valid_img(image) or name is None:
@@ -95,17 +93,18 @@ class FaceRecognition:
         return facial_data
     
 
-    def save_facial_data(self, facial_data=None):
+    def save_facial_data(self, facial_data:Dict=None) -> bool:
         if facial_data is not None:
             self.datastore.add_facial_data(facial_data=facial_data)
             return True
         return False
 
-    def get_registered_faces(self):
+    def get_registered_faces(self) -> List[Dict]:
         return self.datastore.get_all_facial_data()
 
 
-    def recognize_faces(self, image, threshold=0.6, bboxes=None):
+    def recognize_faces(self, image, threshold:float=0.6, 
+                        bboxes:List[List[int]]=None):
         """ Finds a matching face for the give in the input
         image. The input image should be cropped to contain
         only one face and then sent to this method."""
@@ -136,7 +135,7 @@ class FaceRecognition:
         return matches
 
 
-    def get_facial_fingerprint(self, image, bbox=None):
+    def get_facial_fingerprint(self, image, bbox:List[int]=None) -> List[float]:
         if bbox is None:
             raise FaceMissing
         # Convert to dlib format rectangle
@@ -149,16 +148,16 @@ class FaceRecognition:
         # distance between them less than 0.6 then they are from the same
         # person, otherwise they are from different people. 
         face_encoding = self.get_face_encoding(image, face_keypoints)
-
         return face_encoding
 
-    def get_face_encoding(self, image, face_keypoints):
+
+    def get_face_encoding(self, image, face_keypoints:List):
         encoding = self.face_recognizor\
                     .compute_face_descriptor(image, face_keypoints, 1)
         return np.array(encoding)
 
 
-    def euclidean_distance(self, vector1, vector2):
+    def euclidean_distance(self, vector1:Tuple, vector2:Tuple):
         return np.linalg.norm(np.array(vector1) - np.array(vector2)) 
 
 

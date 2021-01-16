@@ -54,7 +54,7 @@ class FaceDetectorOpenCV(FaceDetector):
             raise e
 
 
-    def model_inference(self, image)->List:
+    def model_inference(self, image) -> List:
         # Run the face detection model on the image to get 
         # bounding box coordinates
         # The model expects input as a blob, create input image blob
@@ -68,7 +68,7 @@ class FaceDetectorOpenCV(FaceDetector):
 
 
     def detect_faces(self, image, 
-                    conf_threshold: float=0.7)->List[List[int]]:
+                    conf_threshold: float=0.7) -> List[List[int]]:
         """Performs facial detection on an image. Uses OpenCV DNN based face detector.
         Args:
             image (numpy array): 
@@ -80,9 +80,6 @@ class FaceDetectorOpenCV(FaceDetector):
         Returns:
             List[List[int]]: List of bounding box coordinates
         """
-        if image is None:
-            return []
-        
         if not is_valid_img(image):
             raise InvalidImage
         # To prevent modification of orig img
@@ -114,7 +111,7 @@ class FaceDetectorOpenCV(FaceDetector):
         return bboxes
 
 
-    def is_valid_bbox(self, bbox, height, width):
+    def is_valid_bbox(self, bbox:List[int], height:int, width:int) -> bool:
         """Checks if the bounding box exists in the image.
 
         Args:
@@ -132,6 +129,7 @@ class FaceDetectorOpenCV(FaceDetector):
             if bbox[idx] < 0 or bbox[idx] >= height:
                 return False
         return True
+
 
     def __repr__(self):
         return "FaceDetectorOPENCV <model_loc=str>"
