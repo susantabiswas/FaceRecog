@@ -11,15 +11,17 @@ Ref: http://dlib.net/cnn_face_detector.py.html
 '''
 # ===================================================
 
+import os
+from typing import List
+
+import cv2
+import dlib
+
+from face_recog.exceptions import InvalidImage, ModelFileMissing
+from face_recog.face_detector import FaceDetector
 from face_recog.media_utils import convert_to_rgb
 from face_recog.validators import is_valid_img
-from face_recog.exceptions import InvalidImage, ModelFileMissing
-import os  
-from typing import List
-from face_recog.face_detector import FaceDetector
-import cv2
 
-import dlib 
 
 class FaceDetectorDlib(FaceDetector):
     cnn_model_filename = 'mmod_human_face_detector.dat'

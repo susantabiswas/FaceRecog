@@ -13,13 +13,16 @@ Ref: https://github.com/ipazc/mtcnn
 '''
 # ===================================================
 
+from typing import List
+
+import cv2
+from mtcnn import MTCNN
+
+from face_recog.exceptions import InvalidImage
+from face_recog.face_detector import FaceDetector
 from face_recog.media_utils import convert_to_rgb, draw_bounding_box
 from face_recog.validators import is_valid_img
-from face_recog.exceptions import InvalidImage
-from typing import List
-from face_recog.face_detector import FaceDetector
-from mtcnn import MTCNN
-import cv2
+
 
 class FaceDetectorMTCNN(FaceDetector):
     def __init__(self,
