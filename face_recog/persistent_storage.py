@@ -2,7 +2,7 @@
 # ===================================================
 # Author: Susanta Biswas
 # ===================================================
-'''Description: Base class to handle persistent data 
+'''Description: Abstract base class to handle persistent data 
 storage'''
 # ===================================================
 from abc import ABC, abstractclassmethod, abstractmethod
