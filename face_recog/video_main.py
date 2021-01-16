@@ -11,7 +11,8 @@ from face_recog.face_detection_dlib import FaceDetectorDlib
 from face_recog.validators import path_exists
 import traceback
 from face_recog.exceptions import NoNameProvided, PathNotFound
-from face_recog.media_utils import convert_to_rgb, draw_annotation, draw_bounding_box, get_facial_ROI, get_video_writer
+from face_recog.media_utils import (convert_to_rgb, draw_annotation,
+                                    draw_bounding_box, get_video_writer)
 from face_recog.face_detection_opencv import FaceDetectorOpenCV
 from face_recog.face_recognition import FaceRecognition
 from face_recog.face_detection_mtcnn import FaceDetectorMTCNN
@@ -19,13 +20,13 @@ import cv2
 import sys
 import time
 import numpy as np
-                            
+from typing import List, Dict                   
 
 class FaceRecognitionVideo:
-    def __init__(self, face_detector='dlib', 
-                model_loc='models', 
-                persistent_db_path='data/facial_data.json',
-                face_detection_threshold=0.8) -> None:
+    def __init__(self, face_detector:str='dlib', 
+                model_loc:str='models', 
+                persistent_db_path:str='data/facial_data.json',
+                face_detection_threshold:float=0.8) -> None:
 
         self.face_recognizer = FaceRecognition(model_loc=model_loc,
                                         persistent_data_loc=persistent_db_path,
@@ -41,13 +42,15 @@ class FaceRecognitionVideo:
         elif face_detector == "dlib":
             self.face_detector = FaceDetectorDlib()
 
-    
-    def recognize_face_video(self, video_path=None,
+
+    def recognize_face_video(self, 
+                video_path:str=None,
                 detection_interval:int=15, 
                 save_output:bool=False,
                 preview:bool=False,
-                output_path='data/output.mp4',
-                verbose:bool=True):
+                output_path:str='data/output.mp4',
+                resize_scale:float=0.5,
+                verbose:bool=True) -> None:
 
         if video_path is None:
             # If no video source is given, try
@@ -57,10 +60,8 @@ class FaceRecognitionVideo:
 
         try:
             cap = cv2.VideoCapture(video_path)
-            # height, width = cap.get(4), cap.get(3)
-
+            # To save the video file, get the opencv video writer
             video_writer = get_video_writer(cap, output_path)
-    
             frame_num = 0
             matches, name, match_dist = [], None, None
 
@@ -69,45 +70,38 @@ class FaceRecognitionVideo:
                 status, frame = cap.read()
                 if not status:
                     break
-                # If frame comes from webcam, flip it so it looks like a mirror.
+                # Flip webcam feed so that it looks mirrored
                 if video_path == 0:
                     frame = cv2.flip(frame, 2)
                 
                 if frame_num % detection_interval == 0:
+                    # Scale down the image to increase model 
+                    # inference time.
                     smaller_frame = convert_to_rgb(
-                                        cv2.resize(frame, (0, 0), fx=0.5, fy=0.5))
-                    
+                                        cv2.resize(frame, (0, 0), 
+                                            fx=resize_scale, 
+                                            fy=resize_scale))
+                    # Detect faces
                     matches = self.face_recognizer\
                                     .recognize_faces(
-                                        image = smaller_frame, 
+                                        image=smaller_frame, 
                                         threshold=0.6,
                                         bboxes=None)
-                    # print(matches)
-                    for face_bbox, match, dist in matches:
-                        name = match['name'] if match is not None else 'Unknown'
-                        # match_dist = '{:.2f}'.format(dist) if dist < 1000 else 'INF'
-                        # name = name + ', Dist: {}'.format(match_dist)
-                
-                        if verbose:
-                            # draw face labels
-                            draw_annotation(frame, name, 2 * np.array(face_bbox))
-                            print('Match: {}, dist: {}'.format(name, match_dist))
-                
+                    if verbose:
+                        self.annotate_facial_data(matches, frame, resize_scale)
                 if save_output:
                     video_writer.write(frame)
-                
                 if preview:
                     cv2.imshow('Preview', cv2.resize(frame, (680, 480)))
                     print('[INFO] Enter q to exit')
                 
-                key = cv2.waitKey(1) & 0xFF
-                if key == ord('q'):
-                    break
+                    key = cv2.waitKey(1) & 0xFF
+                    if key == ord('q'):
+                        break
 
                 frame_num += 1
             
             t2 = time.time()
-
             print('Time:{}'.format((t2 - t1) / 60))
             print('Total frames: {}'.format(frame_num))
             print('Time per frame: {}'.format((t2 - t1) / frame_num))
@@ -120,7 +114,7 @@ class FaceRecognitionVideo:
             video_writer.release()
 
     
-    def register_face_webcam(self, name=None, detection_interval=5):
+    def register_face_webcam(self, name:str=None, detection_interval:int=5) -> bool:
         if name is None:
             raise NoNameProvided
 
@@ -150,11 +144,9 @@ class FaceRecognitionVideo:
                                 cv2.waitKey(0)
                                 print('[INFO]Press any key to continue......')
                                 break
-
                     except Exception as exc:
                         traceback.print_exc(file=sys.stdout)
                 frame_num += 1
-            
         except Exception as exc:
             raise exc
         finally:
@@ -162,7 +154,7 @@ class FaceRecognitionVideo:
             cap.release()
 
 
-    def register_face_path(self, img_path, name):
+    def register_face_path(self, img_path:str, name:str) -> None:
         if not path_exists(img_path):
             raise PathNotFound
         try:
@@ -177,6 +169,16 @@ class FaceRecognitionVideo:
             return False
         except Exception as exc:
             raise exc
+
+
+    def annotate_facial_data(self, matches: List[Dict], image,
+                            resize_scale:float) -> None:
+        for face_bbox, match, dist in matches:
+            name = match['name'] if match is not None else 'Unknown'
+            # match_dist = '{:.2f}'.format(dist) if dist < 1000 else 'INF'
+            # name = name + ', Dist: {}'.format(match_dist)
+            # draw face labels
+            draw_annotation(image, name, int(1 / resize_scale) * np.array(face_bbox))
 
 
 if __name__ == "__main__":         
