@@ -20,16 +20,17 @@ Cache is always up to date with the latest facial data.
 
 Usage: python -m face_recog.face_data_store
 '''
-from face_recog.json_persistent_storage import JSONStorage
-from face_recog.simple_cache import SimpleCache
-from face_recog.validators import path_exists
-from face_recog.exceptions import DatabaseFileNotFound, InvalidCacheInitializationData
+# ===================================================
+
 import os
 
-# ===================================================
+from face_recog.exceptions import (DatabaseFileNotFound,
+                                   InvalidCacheInitializationData)
+from face_recog.json_persistent_storage import JSONStorage
+from face_recog.simple_cache import SimpleCache
+
 class FaceDataStore:
     def __init__(self, persistent_data_loc='data/facial_data.json') -> None:
-
         # persistent storage handler
         self.db_handler = JSONStorage(persistent_data_loc)
         saved_data = []
@@ -55,7 +56,7 @@ class FaceDataStore:
         self.cache_handler.add_data(face_data=facial_data)
         self.db_handler.add_data(face_data=facial_data)
 
-    def remove_facial_data(self, face_id=None):
+    def remove_facial_data(self, face_id:str=None):
         """Delete facial record with the matching face id.
 
         Args:
