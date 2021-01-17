@@ -16,6 +16,7 @@ https://github.com/davisking/dlib-models
 # ===================================================
 
 import os
+import sys
 import uuid
 from typing import Dict, List, Tuple
 
@@ -28,9 +29,20 @@ from face_recog.face_data_store import FaceDataStore
 from face_recog.face_detection_dlib import FaceDetectorDlib
 from face_recog.face_detection_mtcnn import FaceDetectorMTCNN
 from face_recog.face_detection_opencv import FaceDetectorOpenCV
+from face_recog.logger import LoggerFactory
 from face_recog.media_utils import convert_to_dlib_rectangle
 from face_recog.validators import is_valid_img, path_exists
 
+# Load the custom logger
+logger = None
+try:
+    logger_ob = LoggerFactory()
+    logger = logger_ob.get_logger(logger_name=__name__)
+    logger.info('{} loaded...'.format(__name__))
+    # set exception hook for uncaught exceptions
+    sys.excepthook = logger_ob.uncaught_exception_hook
+except Exception as exc:
+    raise exc
 
 class FaceRecognition:
     keypoints_model_path = 'shape_predictor_5_face_landmarks.dat'
