@@ -71,50 +71,56 @@ class FaceRecognitionVideo:
         if video_path is None:
             # If no video source is given, try
             # switching to webcam
-            video_path = 0    
+            video_path = 0 
+        elif not path_exists(video_path):
+            raise FileNotFoundError 
+
         cap, video_writer = None, None
 
         try:
             cap = cv2.VideoCapture(video_path)
             # To save the video file, get the opencv video writer
             video_writer = get_video_writer(cap, output_path)
-            frame_num = 0
+            frame_num = 1
             matches, name, match_dist = [], None, None
 
-            t1 = time.time()    
+            t1 = time.time()  
+            logger.info('Enter q to exit...')
+                      
             while True:
                 status, frame = cap.read()
                 if not status:
                     break
-                # Flip webcam feed so that it looks mirrored
-                if video_path == 0:
-                    frame = cv2.flip(frame, 2)
-                
-                if frame_num % detection_interval == 0:
-                    # Scale down the image to increase model 
-                    # inference time.
-                    smaller_frame = convert_to_rgb(
-                                        cv2.resize(frame, (0, 0), 
-                                            fx=resize_scale, 
-                                            fy=resize_scale))
-                    # Detect faces
-                    matches = self.face_recognizer\
-                                    .recognize_faces(
-                                        image=smaller_frame, 
-                                        threshold=0.6,
-                                        bboxes=None)
+                try:
+                    # Flip webcam feed so that it looks mirrored
+                    if video_path == 0:
+                        frame = cv2.flip(frame, 2)
+                    
+                    if frame_num % detection_interval == 0:
+                        # Scale down the image to increase model 
+                        # inference time.
+                        smaller_frame = convert_to_rgb(
+                                            cv2.resize(frame, (0, 0), 
+                                                fx=resize_scale, 
+                                                fy=resize_scale))
+                        # Detect faces
+                        matches = self.face_recognizer\
+                                        .recognize_faces(
+                                            image=smaller_frame, 
+                                            threshold=0.6,
+                                            bboxes=None)
                     if verbose:
                         self.annotate_facial_data(matches, frame, resize_scale)
-                if save_output:
-                    video_writer.write(frame)
-                if preview:
-                    cv2.imshow('Preview', cv2.resize(frame, (680, 480)))
-                    logger.info('Enter q to exit')
-                
+                    if save_output:
+                        video_writer.write(frame)
+                    if preview:
+                        cv2.imshow('Preview', cv2.resize(frame, (680, 480)))
+                        
                     key = cv2.waitKey(1) & 0xFF
                     if key == ord('q'):
                         break
-
+                except Exception:
+                    pass
                 frame_num += 1
             
             t2 = time.time()
@@ -180,7 +186,7 @@ class FaceRecognitionVideo:
                                     image=convert_to_rgb(img), 
                                     name=name)
             if facial_data:
-                logger.info('Face regsitered...')
+                logger.info('Face registered...')
                 return True
             return False
         except Exception as exc:
@@ -201,11 +207,25 @@ if __name__ == "__main__":
     import os 
 
     ob = FaceRecognitionVideo(face_detector='dlib')
-    ob.recognize_face_video(video_path=None, 
-            detection_interval=1, save_output=True, preview=True)
+    # ob.recognize_face_video(video_path=None, 
+    #         detection_interval=5, save_output=True, preview=True)
     # register a face using the webcam
     # ob.register_face_webcam(name="Susanta")
+    
+    ################# 1 ####################
+    # Register faces for videos
+    ob.register_face_path(img_path='data/sample/conan.jpg',name="Conan")
+    ob.register_face_path(img_path='data/sample/steve.png',name="Steve")
+    
+    ob.recognize_face_video(video_path='data/talkshow.mp4', 
+            detection_interval=2, save_output=True, preview=True, resize_scale=0.25)
+    
+    
+    if path_exists('data/facial_data.json'):
+        os.remove('data/facial_data.json')
+    print('[INFO] Test DB file deleted...')
 
+    ###########################################
 
     #####################################
     # Register faces for videos
