@@ -33,6 +33,14 @@ except Exception as exc:
     raise exc
 
 class SimpleCache(InMemoryCache):
+    """Uses native python set as a cache for
+    faster access and unique elements.
+
+    Representation:
+    Set( ((dict_key, value), (dict_key, value)),
+        ((dict_key, value), (dict_key, value))
+        )
+    """
     def __init__(self, data:List[Dict]=None):
         """Constructor
 

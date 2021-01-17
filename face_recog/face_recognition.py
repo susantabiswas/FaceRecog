@@ -45,6 +45,15 @@ except Exception as exc:
     raise exc
 
 class FaceRecognition:
+    """Class for Face Recognition related methods.
+    Main operations: Register and Recognize face.
+
+    Raises:
+        ModelFileMissing: [description]
+        NoNameProvided: [description]
+        NoFaceDetected: [description]
+        FaceMissing: [description]
+    """
     keypoints_model_path = 'shape_predictor_5_face_landmarks.dat'
     face_recog_model_path = 'dlib_face_recognition_resnet_model_v1.dat'
     
