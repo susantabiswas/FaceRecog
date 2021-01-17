@@ -1,9 +1,19 @@
+# ---- coding: utf-8 ----
+# ===================================================
+# Author: Susanta Biswas
+# ===================================================
+'''Description: Custom logger factory with a deafult logger
+mathod to create a logger with file and console stream.'''
+# ===================================================
 import logging
 import sys
 import traceback
 from typing import List
 
 class LoggerFactory:
+    """Custom logger factory with a deafult logger
+    method to create a logger with file and console stream.
+   """
     def create_formatter(self, format_pattern:str):
         """Creates a logger formatter with user defined/deafult format.
 

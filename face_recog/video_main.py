@@ -37,6 +37,8 @@ except Exception as exc:
     raise exc
 
 class FaceRecognitionVideo:
+    """Class with methods to do facial recognition on video or webcam feed.
+    """
     def __init__(self, face_detector:str='dlib', 
                 model_loc:str='models', 
                 persistent_db_path:str='data/facial_data.json',
