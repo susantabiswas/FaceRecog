@@ -20,6 +20,15 @@ from typing import List, Dict, Tuple
 
 class SimpleCache(InMemoryCache):
     def __init__(self, data:List[Dict]=None):
+        """Constructor
+
+        Args:
+            data (List[Dict], optional): Initial data to load in the cache.
+                Defaults to None.
+
+        Raises:
+            InvalidCacheInitializationData: [description]
+        """
         if data is not None and (type(data) is not list \
             or (len(data) and type(data[0]) is not dict)):
             raise InvalidCacheInitializationData
@@ -31,6 +40,11 @@ class SimpleCache(InMemoryCache):
                 self.facial_data.add(self.serialize_dict(face_data))
 
     def add_data(self, face_data:Dict):
+        """Adds facial data to cache.
+
+        Args:
+            face_data (Dict): [description]
+        """ 
         # Dict is mutable and hence unhashable. Set
         # doesn't support unhashable data. So we convert the
         # data to immutable tuple. Also with .items() the order 
@@ -40,10 +54,25 @@ class SimpleCache(InMemoryCache):
 
 
     def get_all_data(self) -> List[Dict]:
+        """Returns a list of facial data of all the
+        registered users from cache. 
+
+        Returns:
+            List[Dict]: [description]
+        """
         return self.deserialize_data(self.facial_data)
 
 
     def delete_data(self, face_id:str):
+        """Deletes the facial record that match the facial
+        Id from cache.
+
+        Args:
+            face_id (str): Identifier used for searching
+
+        Returns:
+            Deletion status: [description]
+        """
         for data in self.facial_data:
             for key_pair in data:            
                 if face_id in key_pair:
@@ -53,6 +82,19 @@ class SimpleCache(InMemoryCache):
 
 
     def serialize_dict(self, data:Dict) -> Tuple[Tuple]:
+        """Serializes the dict data so that it can be stored
+        in python Set data structure. All mutable data types
+        are converted to immutable type.
+
+        Args:
+            data (Dict): Facial data
+
+        Raises:
+            NotADictionary: [description]
+
+        Returns:
+            Tuple[Tuple]: Data safe compatible with Python Set
+        """
         # Convert list to tuple
         if 'encoding' in data and \
             type(data['encoding']) is list:
@@ -63,7 +105,15 @@ class SimpleCache(InMemoryCache):
 
 
     def deserialize_data(self, data) -> List[Dict]:
-        """ Deserialzed form: [ {}, {} ]"""
+        """Used for deserializing data.
+        Deserialzed form: [ {}, {} ]
+
+        Args:
+            data ([type]): [description]
+
+        Returns:
+            List[Dict]: [description]
+        """
         facial_data = []
         for face_data in data:
             facial_data.append({item[0]: item[1] for item in face_data})
@@ -72,7 +122,11 @@ class SimpleCache(InMemoryCache):
 
 
     def get_details(self) -> List[Dict]:
-        """ Returns the name and unique face id of each registered user"""
+        """Returns a list of name and unique face id of each registered user
+
+        Returns:
+            List[Dict]: [description]
+        """
         facial_data = self.get_all_data()
         facial_data = [(face_data['id'], face_data['name']) \
                         for face_data in facial_data]
