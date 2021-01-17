@@ -1,5 +1,6 @@
 import logging
 import sys
+import traceback
 
 class LoggerFactory:
     def create_formatter(self, format_pattern:str):
@@ -44,4 +45,17 @@ class LoggerFactory:
         logger.propagate = propagate_error
         return logger
 
-    
+    def uncaught_exception_hook(self, logger, type, value, tb):
+        
+        # Returns a list of string sentences
+        tb_message = traceback.extract_tb(tb).format()
+        tb_message = '\n'.join(tb_message)
+        err_message = "Uncaught Exception raised! \n{}: {}\nMessage: {}" \
+                        .format(type, value, tb_message)
+        logger.critical(err_message)
+        # Raise so that it can be captured by 3rd party tools
+        raise type(value)
+
+# sys.excepthook = LoggerFactory().my_exception_hook
+sys.excepthook = LoggerFactory().uncaught_exception_hook
+10 + "0"
