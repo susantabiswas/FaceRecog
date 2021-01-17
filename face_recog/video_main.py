@@ -190,7 +190,7 @@ if __name__ == "__main__":
     ob = FaceRecognitionVideo(face_detector='dlib')
     ob.recognize_face_video(video_path=None, 
             detection_interval=1, save_output=True, preview=True)
-    # register a face
+    # register a face using the webcam
     # ob.register_face_webcam(name="Susanta")
 
 
