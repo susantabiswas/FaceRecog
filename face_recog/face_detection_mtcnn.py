@@ -56,7 +56,7 @@ class FaceDetectorMTCNN(FaceDetector):
             self.face_detector = MTCNN()
             self.crop_forehead = crop_forehead
             self.shrink_ratio = shrink_ratio
-            print('[INFO] MTCNN face detector loaded...')
+            logger.info('MTCNN face detector loaded...')
         except Exception as e:
             raise e
 

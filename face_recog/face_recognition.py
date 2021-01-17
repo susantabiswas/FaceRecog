@@ -131,7 +131,7 @@ class FaceRecognition:
             }
             # save the encoding with the name
             self.save_facial_data(facial_data)
-            print('[INFO] Face registered with name: {}'.format(name))
+            logger.info('Face registered with name: {}'.format(name))
         except Exception as exc:
             raise exc
         return facial_data

@@ -61,7 +61,7 @@ class FaceDetectorDlib(FaceDetector):
                     raise ModelFileMissing
                 self.face_detector = dlib.cnn_face_detection_model_v1(cnn_model_path)
             self.model_type = model_type
-            print('[INFO] dlib: {} face detector loaded...'.format(self.model_type))
+            logger.info('dlib: {} face detector loaded...'.format(self.model_type))
         except Exception as e:
             raise e
 
