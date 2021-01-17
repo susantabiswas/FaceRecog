@@ -9,11 +9,25 @@ Usage: python -m face_recog.json_persistent_storage
 '''
 # ===================================================
 import json
+import os
+import sys
+from typing import Dict, List
+
+from face_recog.exceptions import DatabaseFileNotFound
+from face_recog.logger import LoggerFactory
 from face_recog.persistent_storage import PersistentStorage
-from face_recog.exceptions import (DatabaseFileNotFound)
 from face_recog.validators import path_exists
-import os 
-from typing import Dict, List 
+
+# Load the custom logger
+logger = None
+try:
+    logger_ob = LoggerFactory()
+    logger = logger_ob.get_logger(logger_name=__name__)
+    logger.info('{} loaded...'.format(__name__))
+    # set exception hook for uncaught exceptions
+    sys.excepthook = logger_ob.uncaught_exception_hook
+except Exception as exc:
+    raise exc
 
 class JSONStorage(PersistentStorage):
     def __init__(self, db_loc:str='./data/facial_data_db.json'):

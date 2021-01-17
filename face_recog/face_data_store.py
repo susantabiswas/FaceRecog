@@ -23,11 +23,25 @@ Usage: python -m face_recog.face_data_store
 # ===================================================
 
 import os
+import sys
 
 from face_recog.exceptions import (DatabaseFileNotFound,
                                    InvalidCacheInitializationData)
 from face_recog.json_persistent_storage import JSONStorage
+from face_recog.logger import LoggerFactory
 from face_recog.simple_cache import SimpleCache
+
+# Load the custom logger
+logger = None
+try:
+    logger_ob = LoggerFactory()
+    logger = logger_ob.get_logger(logger_name=__name__)
+    logger.info('{} loaded...'.format(__name__))
+    # set exception hook for uncaught exceptions
+    sys.excepthook = logger_ob.uncaught_exception_hook
+except Exception as exc:
+    raise exc
+
 
 class FaceDataStore:
     def __init__(self, persistent_data_loc='data/facial_data.json') -> None:
