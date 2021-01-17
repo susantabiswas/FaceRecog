@@ -107,7 +107,7 @@ class FaceRecognitionVideo:
                     video_writer.write(frame)
                 if preview:
                     cv2.imshow('Preview', cv2.resize(frame, (680, 480)))
-                    print('[INFO] Enter q to exit')
+                    logger.info('Enter q to exit')
                 
                     key = cv2.waitKey(1) & 0xFF
                     if key == ord('q'):
@@ -116,9 +116,9 @@ class FaceRecognitionVideo:
                 frame_num += 1
             
             t2 = time.time()
-            print('Time:{}'.format((t2 - t1) / 60))
-            print('Total frames: {}'.format(frame_num))
-            print('Time per frame: {}'.format((t2 - t1) / frame_num))
+            logger.info('Time:{}'.format((t2 - t1) / 60))
+            logger.info('Total frames: {}'.format(frame_num))
+            logger.info('Time per frame: {}'.format((t2 - t1) / frame_num))
 
         except Exception as exc:
             raise exc
@@ -156,7 +156,7 @@ class FaceRecognitionVideo:
                                 draw_bounding_box(frame, bboxes[0])
                                 cv2.imshow('Registered Face', frame)
                                 cv2.waitKey(0)
-                                print('[INFO]Press any key to continue......')
+                                logger.info('Press any key to continue......')
                                 break
                     except Exception as exc:
                         traceback.print_exc(file=sys.stdout)
@@ -178,7 +178,7 @@ class FaceRecognitionVideo:
                                     image=convert_to_rgb(img), 
                                     name=name)
             if facial_data:
-                print('[INFO] Face regsitered...')
+                logger.info('Face regsitered...')
                 return True
             return False
         except Exception as exc:

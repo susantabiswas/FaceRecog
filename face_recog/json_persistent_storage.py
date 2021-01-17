@@ -49,7 +49,7 @@ class JSONStorage(PersistentStorage):
         base_path, filename = os.path.split(self.db_loc)
             
         if not path_exists(base_path):
-            print("[INFO] DB path doesn't exist! Attempting path creation...")
+            logger.info("DB path doesn't exist! Attempting path creation...")
             os.makedirs(base_path)
         if os.path.exists(self.db_loc):
             # load the existing data
@@ -58,7 +58,7 @@ class JSONStorage(PersistentStorage):
             # Add the new data and save to disk
             data.append(face_data)
             self.save_data(data=data)
-            print('[INFO] Data saved to DB...')
+            logger.info('Data saved to DB...')
         except Exception as exc:
             raise exc
 
@@ -106,7 +106,7 @@ class JSONStorage(PersistentStorage):
 
         if num_entries != len(all_data):
             self.save_data(data=all_data)
-            print(('[INFO] {} face(s) deleted and updated'
+            logger.info(('{} face(s) deleted and updated'
                 ' data saved to DB...').format(num_entries - len(all_data)))
             return True
         return False

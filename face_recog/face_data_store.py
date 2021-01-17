@@ -51,9 +51,9 @@ class FaceDataStore:
         try:
             # Initialize the cache handler with data from DB
             saved_data = self.db_handler.get_all_data()
-            print('[INFO] Data loaded from DB with {} entries...'.format(len(saved_data)))
+            logger.info('Data loaded from DB with {} entries...'.format(len(saved_data)))
         except DatabaseFileNotFound:
-            print('[INFO] No existing DB file found!!')
+            logger.info('No existing DB file found!!')
         try:
             self.cache_handler = SimpleCache(saved_data)
         except InvalidCacheInitializationData:
