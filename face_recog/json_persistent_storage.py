@@ -30,6 +30,12 @@ except Exception as exc:
     raise exc
 
 class JSONStorage(PersistentStorage):
+    """Class to handle persistent data storage.
+    This uses simple JSON file to save data.
+
+    Args:
+        PersistentStorage ([type]): [description]
+    """
     def __init__(self, db_loc:str='./data/facial_data_db.json'):
         """Constructor
 

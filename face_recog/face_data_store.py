@@ -44,6 +44,22 @@ except Exception as exc:
 
 
 class FaceDataStore:
+    """Class to handle saving and retrieving facial data.
+    The data is saved on disk for peersistence, also an in-memory cache is 
+    used for quicker look ups.
+
+    For persistent storage a JSON file is used and for in memory cache,
+    native python set is used.
+    Cache doesn't allow duplicates. Without duplicates, entries for 
+    search are limited.
+
+    Cache is initialized with data loaded from DB. Then each addition 
+    of face data for a new user goes through two writes:
+    1. Addition to cache
+    2. Saved to disk DB.
+
+    Cache is always up to date with the latest facial data.
+    """
     def __init__(self, persistent_data_loc='data/facial_data.json') -> None:
         # persistent storage handler
         self.db_handler = JSONStorage(persistent_data_loc)
