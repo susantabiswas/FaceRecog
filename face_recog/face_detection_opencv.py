@@ -3,8 +3,7 @@
 # Author: Susanta Biswas
 # ===================================================
 '''Description: Class for face detection. Uses a OpenCV's CNN 
-model to get the bounding box coordinates 
-for a human face.
+model to get the bounding box coordinates for a human face.
 
 Usage: python -m face_recog.face_detection_opencv
 '''
@@ -34,6 +33,10 @@ except Exception as exc:
     raise exc
 
 class FaceDetectorOpenCV(FaceDetector):
+    """Class for face detection. Uses a OpenCV's CNN 
+    model to get the bounding box coordinates for a human face.
+
+    """
     def __init__(self, model_loc='./models',
                 crop_forehead:bool=True,
                 shrink_ratio:int=0.1):

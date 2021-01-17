@@ -37,6 +37,10 @@ except Exception as exc:
     raise exc
 
 class FaceDetectorMTCNN(FaceDetector):
+    """Class for face detection. Uses a MTCNN 
+    based neural network to get the bounding box coordinates 
+    for a human face.
+    """
     def __init__(self,
                 crop_forehead:bool=True,
                 shrink_ratio:int=0.1):

@@ -36,6 +36,11 @@ except Exception as exc:
     raise exc
 
 class FaceDetectorDlib(FaceDetector):
+    """Class for face detection. Uses face detectors from dlib.
+    Raises:
+        ModelFileMissing: [description]
+        InvalidImage: [description]
+    """
     cnn_model_filename = 'mmod_human_face_detector.dat'
     
     def __init__(self, model_loc:str='models', model_type:str='hog'):
