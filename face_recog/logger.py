@@ -14,6 +14,14 @@ class LoggerFactory:
     """Custom logger factory with a deafult logger
     method to create a logger with file and console stream.
    """
+    def __init__(self, logger_name:str):
+        """Creates a logger with default settings.
+
+        Args:
+            logger_name (str): logger name
+        """
+        self.logger = self.create_logger(logger_name=logger_name)
+        
     def create_formatter(self, format_pattern:str):
         """Creates a logger formatter with user defined/deafult format.
 
@@ -63,7 +71,7 @@ class LoggerFactory:
         file_handler.setLevel(level)
         return file_handler
 
-    def get_logger(self, logger_name, level=logging.DEBUG, 
+    def create_logger(self, logger_name, level=logging.DEBUG, 
                 format_pattern:str=None, file_path:str='data/app.log'):
         """Creates a logger with pre-defined settings
 
@@ -92,7 +100,15 @@ class LoggerFactory:
         logger.propagate = False
         return logger
 
-    def create_logger(self, logger_name:str, handlers:List, 
+    def get_logger(self):
+        """Returns the created logger
+        Returns:
+            logger
+        """
+        return self.logger
+
+
+    def create_custom_logger(self, logger_name:str, handlers:List, 
                 propagate_error:bool=False):
         """Creates a custom logger.
 
@@ -112,7 +128,7 @@ class LoggerFactory:
         logger.propagate = propagate_error
         return logger
 
-    def uncaught_exception_hook(self, logger, type, value, tb):
+    def uncaught_exception_hook(self, type, value, tb):
         """Handles uncaught exceptions and saves the details
         using the logger. So if the logger has console and file
         stream handlers, then the uncaught exception will be sent there.    
@@ -123,18 +139,13 @@ class LoggerFactory:
             value (Exception value): Exception message
             tb (traceback): 
 
-        Raises:
-            The uncaught exception
         """
         # Returns a list of string sentences
         tb_message = traceback.extract_tb(tb).format()
         tb_message = '\n'.join(tb_message)
         err_message = "Uncaught Exception raised! \n{}: {}\nMessage: {}" \
                         .format(type, value, tb_message)
-        logger.critical(err_message)
-        # Raise so that it can be captured by 3rd party tools
-        raise type(value)
-
+        self.logger.critical(err_message)
 
 # sys.excepthook = LoggerFactory().uncaught_exception_hook
 # ValueError
