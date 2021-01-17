@@ -20,10 +20,21 @@ from face_recog.face_detection_dlib import FaceDetectorDlib
 from face_recog.face_detection_mtcnn import FaceDetectorMTCNN
 from face_recog.face_detection_opencv import FaceDetectorOpenCV
 from face_recog.face_recognition import FaceRecognition
+from face_recog.logger import LoggerFactory
 from face_recog.media_utils import (convert_to_rgb, draw_annotation,
                                     draw_bounding_box, get_video_writer)
 from face_recog.validators import path_exists
 
+# Load the custom logger
+logger = None
+try:
+    logger_ob = LoggerFactory()
+    logger = logger_ob.get_logger(logger_name=__name__)
+    logger.info('{} loaded...'.format(__name__))
+    # set exception hook for uncaught exceptions
+    sys.excepthook = logger_ob.uncaught_exception_hook
+except Exception as exc:
+    raise exc
 
 class FaceRecognitionVideo:
     def __init__(self, face_detector:str='dlib', 

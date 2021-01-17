@@ -1,8 +1,13 @@
-import cv2
-from face_recog.validators import is_valid_img
-from face_recog.exceptions import InvalidImage
-import dlib 
+import sys
 from typing import List, Tuple
+
+import cv2
+import dlib
+
+from face_recog.exceptions import InvalidImage
+from face_recog.logger import LoggerFactory
+from face_recog.validators import is_valid_img
+
 
 def convert_to_rgb(image):
     """Converts an image to RGB format.
