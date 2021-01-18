@@ -1,11 +1,14 @@
 from face_recog.exceptions import InvalidImage
 import pytest
-from face_recog.media_utils import (convert_to_dlib_rectangle, 
-                                    convert_to_rgb, 
-                                    load_image_path)
-import numpy as np 
-import cv2 
-import dlib 
+from face_recog.media_utils import (
+    convert_to_dlib_rectangle,
+    convert_to_rgb,
+    load_image_path,
+)
+import numpy as np
+import cv2
+import dlib
+
 
 def test_convert_to_dlib_rectangle():
     """ Check if dlib rectangle is created properly"""
@@ -16,7 +19,7 @@ def test_convert_to_dlib_rectangle():
 
 def test_load_image_path():
     """ Check if exception is thrown when an invalid array is given"""
-    path = 'data/sample/1.jpg'
+    path = "data/sample/1.jpg"
     img = cv2.imread(path)
     img = convert_to_rgb(img)
     loaded_img = load_image_path(path)
@@ -36,5 +39,3 @@ def test_convert_to_rgb(img1_data):
     rgb = cv2.cvtColor(img1_data, cv2.COLOR_BGR2RGB)
     converted_img = convert_to_rgb(img1_data)
     assert np.all(rgb == converted_img) == True
-
-    
