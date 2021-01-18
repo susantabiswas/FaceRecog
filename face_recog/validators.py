@@ -2,9 +2,10 @@
 # ===================================================
 # Author: Susanta Biswas
 # ===================================================
-'''Description: Helper methods for validation.'''
+"""Description: Helper methods for validation."""
 # ===================================================
 import os
+
 
 def is_valid_img(image) -> bool:
     """Checks if an image is valid or not.
@@ -15,11 +16,10 @@ def is_valid_img(image) -> bool:
     Returns:
         bool: [description]
     """
-    return image is None or \
-            not (len(image.shape) != 3 
-                or image.shape[-1] != 3)
+    return image is None or not (len(image.shape) != 3 or image.shape[-1] != 3)
 
-def path_exists(path:str=None) -> bool:
+
+def path_exists(path: str = None) -> bool:
     """Checks if a path exists.
 
     Args:
