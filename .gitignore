@@ -2,3 +2,4 @@
 .benchmark/
 .pytest_cache/
 .coverage
+**.log
