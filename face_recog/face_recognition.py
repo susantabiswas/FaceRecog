@@ -297,7 +297,8 @@ if __name__ == "__main__":
     img3 = load_image_path("data/sample/sagar.jpg")
     img4 = load_image_path("data/sample/vidit.jpg")
     img5 = load_image_path("data/sample/sagar2.jpg")
-    # data1 = ob.register_face(image=img1, name='Test1')
+    
+    # data1 = ob.register_face(image=img1, name='Keanu')
     # data2 = ob.register_face(image=img2, name='Test2')
 
     # # print(data1)
@@ -319,4 +320,4 @@ if __name__ == "__main__":
     # match, dist = ob.recognize_face(img5, check_face_count=True)
     # print(match['name'] if match and 'name' in match else '', dist)
 
-    os.remove("data/facial_data.json")
+    # os.remove("data/facial_data.json")

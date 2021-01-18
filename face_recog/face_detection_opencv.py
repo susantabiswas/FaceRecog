@@ -18,7 +18,7 @@ import cv2
 from face_recog.exceptions import InvalidImage, ModelFileMissing
 from face_recog.face_detector import FaceDetector
 from face_recog.logger import LoggerFactory
-from face_recog.media_utils import convert_to_rgb, draw_bounding_box
+from face_recog.media_utils import convert_to_rgb, draw_annotation, draw_bounding_box
 from face_recog.validators import is_valid_img
 
 # Load the custom logger
@@ -151,13 +151,14 @@ class FaceDetectorOpenCV(FaceDetector):
 
 if __name__ == "__main__":
     # Sample Usage
-    ob = FaceDetectorOpenCV(model_loc="models")
-    img = cv2.imread("data/sample/2.jpg")
+    ob = FaceDetectorOpenCV(model_loc="models", crop_forehead=False)
+    img = cv2.imread("data/media/8.jpg")
 
     # import numpy as np
     # img = np.zeros((100,100,5), dtype='float32')
     bboxes = ob.detect_faces(convert_to_rgb(img), conf_threshold=0.99)
-
+    cv2.imwrite('data/8.jpg', img)
+    
     print(bboxes)
     print(ob)
     print(img.shape)

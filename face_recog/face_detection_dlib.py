@@ -21,7 +21,7 @@ import dlib
 from face_recog.exceptions import InvalidImage, ModelFileMissing
 from face_recog.face_detector import FaceDetector
 from face_recog.logger import LoggerFactory
-from face_recog.media_utils import convert_to_rgb
+from face_recog.media_utils import convert_to_rgb, draw_annotation
 from face_recog.validators import is_valid_img
 
 # Load the custom logger
@@ -130,6 +130,7 @@ if __name__ == "__main__":
     print(img.shape)
     bbox = ob.detect_faces(convert_to_rgb(img))
     print(bbox)
+    
     # draw_bounding_box(img, bbox)
 
     # small_frame = cv2.resize(img, (0, 0), fx=0.5, fy=0.5)
