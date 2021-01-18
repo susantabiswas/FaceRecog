@@ -2,11 +2,11 @@
 # ===================================================
 # Author: Susanta Biswas
 # ===================================================
-'''Description: Class for face detection. Uses a OpenCV's CNN 
+"""Description: Class for face detection. Uses a OpenCV's CNN 
 model to get the bounding box coordinates for a human face.
 
 Usage: python -m face_recog.face_detection_opencv
-'''
+"""
 # ===================================================
 
 import os
@@ -26,72 +26,68 @@ logger = None
 try:
     logger_ob = LoggerFactory(logger_name=__name__)
     logger = logger_ob.get_logger()
-    logger.info('{} loaded...'.format(__name__))
+    logger.info("{} loaded...".format(__name__))
     # set exception hook for uncaught exceptions
     sys.excepthook = logger_ob.uncaught_exception_hook
 except Exception as exc:
     raise exc
 
+
 class FaceDetectorOpenCV(FaceDetector):
-    """Class for face detection. Uses a OpenCV's CNN 
+    """Class for face detection. Uses a OpenCV's CNN
     model to get the bounding box coordinates for a human face.
 
     """
-    def __init__(self, model_loc='./models',
-                crop_forehead:bool=True,
-                shrink_ratio:int=0.1):
+
+    def __init__(
+        self, model_loc="./models", crop_forehead: bool = True, shrink_ratio: int = 0.1
+    ):
         """Constructor
 
         Args:
-            model_loc (str, optional): Path where the models are saved. 
+            model_loc (str, optional): Path where the models are saved.
                 Defaults to 'models'.
-            crop_forehead (bool, optional): Whether to trim the 
-                forehead in the detected facial ROI. Certain datasets 
+            crop_forehead (bool, optional): Whether to trim the
+                forehead in the detected facial ROI. Certain datasets
                 like Dlib models are trained on cropped images without forehead.
                 It can useful in those scenarios.
                 Defaults to True.
-            shrink_ratio (float, optional): Amount of height to shrink 
+            shrink_ratio (float, optional): Amount of height to shrink
                 Defaults to 0.1
         Raises:
-            ModelFileMissing: Raised when model file is not found   
+            ModelFileMissing: Raised when model file is not found
         """
         # Model file and associated config path
-        model_path = os.path.join(model_loc,
-                            'opencv_face_detector_uint8.pb')
-        config_path = os.path.join(model_loc,
-                            'opencv_face_detector.pbtxt')
-        
+        model_path = os.path.join(model_loc, "opencv_face_detector_uint8.pb")
+        config_path = os.path.join(model_loc, "opencv_face_detector.pbtxt")
+
         self.crop_forehead = crop_forehead
         self.shrink_ratio = shrink_ratio
-        if not os.path.exists(model_path) or \
-            not os.path.exists(config_path):
+        if not os.path.exists(model_path) or not os.path.exists(config_path):
             raise ModelFileMissing
         try:
             # load the model
-            self.face_detector = cv2.dnn.readNetFromTensorflow(model_path,
-                                                        config_path)
+            self.face_detector = cv2.dnn.readNetFromTensorflow(model_path, config_path)
         except Exception as e:
             raise e
 
-
     def model_inference(self, image) -> List:
-        # Run the face detection model on the image to get 
+        # Run the face detection model on the image to get
         # bounding box coordinates
         # The model expects input as a blob, create input image blob
-        img_blob = cv2.dnn.blobFromImage(image, 1.0, \
-                        (300, 300), [104, 117, 123], False, False)
+        img_blob = cv2.dnn.blobFromImage(
+            image, 1.0, (300, 300), [104, 117, 123], False, False
+        )
         # Feed the input blob to NN and get the output layer predictions
         self.face_detector.setInput(img_blob)
         detections = self.face_detector.forward()
 
         return detections
 
-
-    def detect_faces(self, image, 
-                    conf_threshold: float=0.7) -> List[List[int]]:
+    def detect_faces(self, image, conf_threshold: float = 0.7) -> List[List[int]]:
         """Performs facial detection on an image. Uses OpenCV DNN based face detector.
         Args:
-            image (numpy array): 
+            image (numpy array):
             conf_threshold (float, optional): Threshold confidence to consider
         Raises:
             InvalidImage: When the image is either None or
@@ -105,7 +101,7 @@ class FaceDetectorOpenCV(FaceDetector):
         # To prevent modification of orig img
         image = image.copy()
         height, width = image.shape[:2]
-        
+
         # Do a forward propagation with the blob created from input img
         detections = self.model_inference(image)
         # Bounding box coordinates of faces in image
@@ -130,14 +126,13 @@ class FaceDetectorOpenCV(FaceDetector):
 
         return bboxes
 
-
-    def is_valid_bbox(self, bbox:List[int], height:int, width:int) -> bool:
+    def is_valid_bbox(self, bbox: List[int], height: int, width: int) -> bool:
         """Checks if the bounding box exists in the image.
 
         Args:
             bbox (List[int]): Bounding box coordinates
-            height (int): 
-            width (int): 
+            height (int):
+            width (int):
 
         Returns:
             bool: Whether the bounding box is valid
@@ -150,16 +145,15 @@ class FaceDetectorOpenCV(FaceDetector):
                 return False
         return True
 
-
     def __repr__(self):
         return "FaceDetectorOPENCV <model_loc=str>"
 
 
 if __name__ == "__main__":
     # Sample Usage
-    ob = FaceDetectorOpenCV(model_loc='models')
-    img = cv2.imread('data/sample/2.jpg')
-   
+    ob = FaceDetectorOpenCV(model_loc="models")
+    img = cv2.imread("data/sample/2.jpg")
+
     # import numpy as np
     # img = np.zeros((100,100,5), dtype='float32')
     bboxes = ob.detect_faces(convert_to_rgb(img), conf_threshold=0.99)
@@ -168,5 +162,5 @@ if __name__ == "__main__":
     print(ob)
     print(img.shape)
     for bbox in bboxes:
-        cv2.imshow('Test',draw_bounding_box(img, bbox))
+        cv2.imshow("Test", draw_bounding_box(img, bbox))
         cv2.waitKey(0)
