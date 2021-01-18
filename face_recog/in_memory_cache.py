@@ -2,10 +2,11 @@
 # ===================================================
 # Author: Susanta Biswas
 # ===================================================
-'''Description: Abstract class for handling data management in memory
- cache'''
+"""Description: Abstract class for handling data management in memory
+ cache"""
 # ===================================================
 from abc import ABC, abstractmethod
+
 
 class InMemoryCache(ABC):
     @abstractmethod
