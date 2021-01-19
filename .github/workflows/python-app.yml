@@ -35,7 +35,3 @@ jobs:
         pip install pytest-cov
         python -m pytest --cov=./
 
-    - name: Coveralls
-      uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
