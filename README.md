@@ -16,7 +16,7 @@ There are 4 different face detectors for usage. Wrappers for video and webcam pr
 <img src="data/media/7.jpg" height="320" /><img src="data/media/8.jpg" height="320" />
 <img src="data/media/3.jpg" height="320" /><img src="data/media/4.jpg" height="320" />
 <img src="data/media/9.jpg" height="320" />
-<img src="data/media/5.jpg" height="320" /><img src="data/media/6.jpg" height="320" />
+<!-- <img src="data/media/5.jpg" height="320" /><img src="data/media/6.jpg" height="320" /> -->
 
 
 
@@ -55,12 +55,12 @@ You can build the docker image from the docker file present in the repo.
 
 # Project Structure
 ```
-.
+FaceRecog/
 ├── Dockerfile
 ├── README.md
-├── data
-├── docs
-├── face_recog
+├── data/
+├── docs/
+├── face_recog/
 │   ├── exceptions.py
 │   ├── face_data_store.py
 │   ├── face_detection_dlib.py
@@ -75,15 +75,14 @@ You can build the docker image from the docker file present in the repo.
 │   ├── persistent_storage.py
 │   ├── simple_cache.py
 │   └── validators.py
-├── models
+├── models/
 │   ├── dlib_face_recognition_resnet_model_v1.dat
 │   ├── mmod_human_face_detector.dat
 │   ├── opencv_face_detector.pbtxt
 │   ├── opencv_face_detector_uint8.pb
 │   └── shape_predictor_5_face_landmarks.dat
-├── old.md
 ├── requirements.txt
-├── tests
+├── tests/
 │   ├── conftest.py
 │   ├── test_face_data_store.py
 │   ├── test_face_detection_dlib.py
@@ -199,8 +198,6 @@ bboxes = face_detector.detect_faces(image)
 
 # References
 The awesome work Davis E. King has done: 
-
-http://dlib.net/cnn_face_detector.py.html
-https://github.com/davisking/dlib-models
-
+http://dlib.net/cnn_face_detector.py.html, 
+https://github.com/davisking/dlib-models<br>
 You can find more about MTCNN from here: https://github.com/ipazc/mtcnn
