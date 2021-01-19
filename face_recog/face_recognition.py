@@ -317,7 +317,7 @@ if __name__ == "__main__":
     # print('FD2',fd2.detect_faces(img3))
 
     # print('Attempting face recognition...')
-    # match, dist = ob.recognize_face(img5, check_face_count=True)
+    # matches = ob.recognize_faces(img5)
     # print(match['name'] if match and 'name' in match else '', dist)
 
     # os.remove("data/facial_data.json")
