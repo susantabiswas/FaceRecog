@@ -21,7 +21,7 @@ import dlib
 from face_recog.exceptions import InvalidImage, ModelFileMissing
 from face_recog.face_detector import FaceDetector
 from face_recog.logger import LoggerFactory
-from face_recog.media_utils import convert_to_rgb, draw_annotation
+from face_recog.media_utils import convert_to_rgb
 from face_recog.validators import is_valid_img
 
 # Load the custom logger
@@ -141,12 +141,3 @@ if __name__ == "__main__":
     # cv2.imshow('Test',small_frame)
     # cv2.waitKey(0)
 
-    # # rescale
-    # import numpy as np
-    # bbox1 = 2*np.array(bbox1)
-    # print('rescaled',bbox1)
-    # draw_bounding_box(img, bbox[0])
-    # draw_bounding_box(img, bbox1[0], color=(255,255,0))
-
-    # cv2.imshow('Test',img)
-    # cv2.waitKey(0)

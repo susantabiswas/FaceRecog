@@ -151,7 +151,6 @@ class JSONStorage(PersistentStorage):
 
 if __name__ == "__main__":
     """ Sanity checks """
-    import numpy as np
 
     ob = JSONStorage(db_loc="data/test_facial_data.json")
     # Save data

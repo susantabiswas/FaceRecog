@@ -22,7 +22,7 @@ from mtcnn import MTCNN
 from face_recog.exceptions import InvalidImage
 from face_recog.face_detector import FaceDetector
 from face_recog.logger import LoggerFactory
-from face_recog.media_utils import convert_to_rgb, draw_annotation, draw_bounding_box
+from face_recog.media_utils import convert_to_rgb
 from face_recog.validators import is_valid_img
 
 # Load the custom logger
@@ -131,12 +131,3 @@ if __name__ == "__main__":
     bbox = ob.detect_faces(convert_to_rgb(img))
     cv2.imwrite('data/out1.jpg', img)
 
-    # print(bbox)
-    # print(ob)
-    # x1, y1, x2, y2 = bbox[0]
-    # h, w = y2 - y1, x2 - x1
-    # shift_y = int(0.20 * h)
-    # bbox = [x1, y1 + shift_y, x2, y2]
-    # print(bbox)
-    # cv2.imshow("Test", draw_bounding_box(img, bbox))
-    # cv2.waitKey(0)

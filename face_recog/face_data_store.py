@@ -109,7 +109,6 @@ class FaceDataStore:
 
 
 if __name__ == "__main__":
-    import numpy as np
 
     print("Saving 1 entry to DataStore...")
     ob = FaceDataStore(persistent_data_loc="data/test_facial_data.json")

@@ -304,13 +304,6 @@ if __name__ == "__main__":
     # # print(data1)
     # print(data2)
 
-    # print('Match:', ob.euclidean_distance(list(data1['encoding']), list(data2['encoding'])))
-
-    # ob.register_face(image=img1, name='Test1')
-    # ob.register_face(image=img2, name='Test2')
-    # ob.register_face(image=img4, name='Vidit')
-    # ob.register_face(image=img3, name='Sagar')
-
     # fd = FaceDetectorMTCNN()
     # fd2 = FaceDetectorOpenCV()
     # print('FD',fd.detect_faces(img3))

@@ -5,7 +5,7 @@
 """Description: Abstract base class to handle persistent data 
 storage"""
 # ===================================================
-from abc import ABC, abstractclassmethod, abstractmethod
+from abc import ABC, abstractmethod
 
 
 class PersistentStorage(ABC):

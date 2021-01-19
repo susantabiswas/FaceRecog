@@ -1,11 +1,9 @@
-import sys
 from typing import List, Tuple
 
 import cv2
 import dlib
 
 from face_recog.exceptions import InvalidImage
-from face_recog.logger import LoggerFactory
 from face_recog.validators import is_valid_img
 
 

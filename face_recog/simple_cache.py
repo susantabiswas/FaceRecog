@@ -153,7 +153,6 @@ class SimpleCache(InMemoryCache):
 
 
 if __name__ == "__main__":
-    import numpy as np
 
     # Save data
     face_data = {"name": "test3", "encoding": (-3.4, 0.3, -0.823, 1)}
