@@ -1,9 +1,19 @@
-# Overview
-This face recognition library is built with ease and customization in mind. There are numerous control parameters to control how you want to use the features, be it face detection, face recognition on videos or with webcam. 
+[![HitCount](http://hits.dwyl.io/susantabiswas/FaceRecog.svg)](http://hits.dwyl.io/susantabiswas/FaceRecog)
+
+# Facial Recognition System
+This face recognition library is built with ease and customization in mind. There are numerous control parameters to control how you want to use the features, be it face detection, face recognition on videos, or with a webcam. 
 <br>
-At its core the facial recognition system uses **Siamese Neural network**. Over the years there have been different architectures published and implemented. The library uses **dlib**'s face recognition model, which is inspired from **ResNet-34** network. The modified ResNet-34 has 29 conv layers. The model achieved 99.38% accuracy on LFW dataset. 
+At its core, the facial recognition system uses **Siamese Neural network**. Over the years there have been different architectures published and implemented. The library uses **dlib**'s face recognition model, which is inspired from **ResNet-34** network. The modified ResNet-34 has 29 Convolutional layers. The model achieved 99.38% accuracy on LFW dataset. 
 
 There are 4 different face detectors for usage. Wrappers for video and webcam processing are provided for convenience.<br><br>
+
+## Table of Contents
+- [Sample Output](#sample-output)
+- [Architecture](#architecture)
+- [Setup](#setup)
+- [Project Structure](#project-structure)
+- [Usage](#usage)
+- [References](#references)
 
 # Sample Output
 
@@ -30,8 +40,8 @@ For face recognition, flow is:
 These are the major components:
 1. **Face Detection**: There are 4 different face detectors with different cropping options.
 2. **Face Recognition**: Responsible for handling facial recognition related functionalities like registering facial data etc. 
-3. **Storage**: The systems provides abstract definitions of cache and persistent storage. For usage a simple cache using python's native data structure is provided along side a persistent storage with JSON. If needed the abstract classes can be extended to integrate better storage systems. 
-4. **Utilities**: Methods for handling image, video operations, validations etc.
+3. **Storage**: The system provides abstract definitions of cache and persistent storage. For usage, a simple cache using python's native data structure is provided along side a persistent storage system with JSON. If needed the abstract classes can be extended to integrate better storage systems. 
+4. **Utilities**: Methods for handling image, video operations, validations, etc.
 
 <br>
 
@@ -61,47 +71,47 @@ FaceRecog/
 ├── data/
 ├── docs/
 ├── face_recog/
-│   ├── exceptions.py
-│   ├── face_data_store.py
-│   ├── face_detection_dlib.py
-│   ├── face_detection_mtcnn.py
-│   ├── face_detection_opencv.py
-│   ├── face_detector.py
-│   ├── face_recognition.py
-│   ├── in_memory_cache.py
-│   ├── json_persistent_storage.py
-│   ├── logger.py
-│   ├── media_utils.py
-│   ├── persistent_storage.py
-│   ├── simple_cache.py
-│   └── validators.py
+│   ├── exceptions.py
+│   ├── face_data_store.py
+│   ├── face_detection_dlib.py
+│   ├── face_detection_mtcnn.py
+│   ├── face_detection_opencv.py
+│   ├── face_detector.py
+│   ├── face_recognition.py
+│   ├── in_memory_cache.py
+│   ├── json_persistent_storage.py
+│   ├── logger.py
+│   ├── media_utils.py
+│   ├── persistent_storage.py
+│   ├── simple_cache.py
+│   └── validators.py
 ├── models/
-│   ├── dlib_face_recognition_resnet_model_v1.dat
-│   ├── mmod_human_face_detector.dat
-│   ├── opencv_face_detector.pbtxt
-│   ├── opencv_face_detector_uint8.pb
-│   └── shape_predictor_5_face_landmarks.dat
+│   ├── dlib_face_recognition_resnet_model_v1.dat
+│   ├── mmod_human_face_detector.dat
+│   ├── opencv_face_detector.pbtxt
+│   ├── opencv_face_detector_uint8.pb
+│   └── shape_predictor_5_face_landmarks.dat
 ├── requirements.txt
 ├── tests/
-│   ├── conftest.py
-│   ├── test_face_data_store.py
-│   ├── test_face_detection_dlib.py
-│   ├── test_face_detection_mtcnn.py
-│   ├── test_face_detection_opencv.py
-│   ├── test_face_recognition.py
-│   ├── test_json_persistent_storage.py
-│   ├── test_media_utils.py
-│   └── test_simple_cache.py
+│   ├── conftest.py
+│   ├── test_face_data_store.py
+│   ├── test_face_detection_dlib.py
+│   ├── test_face_detection_mtcnn.py
+│   ├── test_face_detection_opencv.py
+│   ├── test_face_recognition.py
+│   ├── test_json_persistent_storage.py
+│   ├── test_media_utils.py
+│   └── test_simple_cache.py
 └── video_main.py
 ```
 
 # Usage
 
 ### Face Recognition
-Depending on the use case, whether to aim for accuracy and stability or speed etc., you can pick the face detector. Also there are customization options inside face detectors also to decide the facial ROI.
+Depending on the use case, whether to aim for accuracy and stability or speed etc., you can pick the face detector. Also, there are customization options inside face detectors to decide the facial ROI.
 
 
-To register a face using webcam
+To register a face using a webcam
 ```python
 # Inside project root
 import video_main
@@ -137,7 +147,7 @@ img = load_image_path("data/sample/1.jpg")
 matches = face_recognizer.register_face(image=img, name=name)
 ```
 
-Face recognition with webcam feed
+Face recognition with a webcam feed
 ```python
 # Inside project root
 import video_main
