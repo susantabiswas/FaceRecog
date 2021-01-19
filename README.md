@@ -1,5 +1,5 @@
 [![HitCount](http://hits.dwyl.io/susantabiswas/FaceRecog.svg)](http://hits.dwyl.io/susantabiswas/FaceRecog)
-![Build](https://github.com/susantabiswas/FaceRecog/workflows/face_recog_action/badge.svg)
+![Build](https://github.com/susantabiswas/FaceRecog/workflows/Build/badge.svg)
 
 # Facial Recognition System
 This face recognition library is built with ease and customization in mind. There are numerous control parameters to control how you want to use the features, be it face detection, face recognition on videos, or with a webcam. 
