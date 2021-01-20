@@ -4,7 +4,6 @@
 ![Tests](https://github.com/susantabiswas/FaceRecog/workflows/Tests/badge.svg)
 [![Build Status](https://travis-ci.com/susantabiswas/FaceRecog.svg?branch=master)](https://travis-ci.com/susantabiswas/FaceRecog)
 [![codecov](https://codecov.io/gh/susantabiswas/FaceRecog/branch/master/graph/badge.svg?token=CW7OR72KCW)](https://codecov.io/gh/susantabiswas/FaceRecog)
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/susantabiswas/FaceRecog.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/susantabiswas/FaceRecog/alerts/)
 
 
 
