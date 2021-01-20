@@ -1,6 +1,12 @@
 [![HitCount](http://hits.dwyl.io/susantabiswas/FaceRecog.svg)](http://hits.dwyl.io/susantabiswas/FaceRecog)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/susantabiswas/FaceRecog.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/susantabiswas/FaceRecog/context:python)
+[![Maintainability](https://api.codeclimate.com/v1/badges/97e039df521b8ecf87c2/maintainability)](https://codeclimate.com/github/susantabiswas/FaceRecog/maintainability)
 ![Tests](https://github.com/susantabiswas/FaceRecog/workflows/Tests/badge.svg)
 [![Build Status](https://travis-ci.com/susantabiswas/FaceRecog.svg?branch=master)](https://travis-ci.com/susantabiswas/FaceRecog)
+[![codecov](https://codecov.io/gh/susantabiswas/FaceRecog/branch/master/graph/badge.svg?token=CW7OR72KCW)](https://codecov.io/gh/susantabiswas/FaceRecog)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/susantabiswas/FaceRecog.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/susantabiswas/FaceRecog/alerts/)
+
+
 
 # Facial Recognition System
 This face recognition library is built with ease and customization in mind. There are numerous control parameters to control how you want to use the features, be it face detection, face recognition on videos, or with a webcam. 
