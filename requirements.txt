@@ -4,4 +4,3 @@ dlib==19.19.0
 numpy==1.19.3
 opencv_python==4.5.1.48
 tensorflow==2.6.0
-keras==2.4.3
