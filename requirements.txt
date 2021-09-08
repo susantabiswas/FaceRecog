@@ -1,7 +1,7 @@
 pytest==6.2.1
 mtcnn==0.1.0
 dlib==19.19.0
-numpy>=1.19.3
+numpy==1.19.2
 opencv_python==4.5.1.48
 tensorflow==2.5.1
 keras==2.4.3
