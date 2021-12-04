@@ -9,7 +9,6 @@ before_script:
 
 install:
   - pip install -r requirements.txt
-  - pip install pytest-cov
 
 # for codecoverage on codeclimate.com
 env:
