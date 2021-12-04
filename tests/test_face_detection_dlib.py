@@ -1,7 +1,15 @@
-import pytest
-from face_recog.exceptions import ModelFileMissing
+from face_recog.exceptions import ModelFileMissing, InvalidImage
 from face_recog.face_detection_dlib import FaceDetectorDlib
+import pytest
+import numpy as np
 
+def test_invalid_image():
+    model_loc = "./models"
+    ob = FaceDetectorDlib(model_loc=model_loc, model_type="hog")
+    img = np.zeros((100,100,5), dtype='float32')
+
+    with pytest.raises(InvalidImage):
+        ob.detect_faces(img)
 
 def test_correct_model_path():
     """
