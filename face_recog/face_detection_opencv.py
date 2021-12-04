@@ -150,18 +150,16 @@ class FaceDetectorOpenCV(FaceDetector):
 
 
 if __name__ == "__main__":
-    # Sample Usage
-    ob = FaceDetectorOpenCV(model_loc="models", crop_forehead=False)
-    img = cv2.imread("data/media/8.jpg")
+    ############# Sample Usage #############
+    # ob = FaceDetectorOpenCV(model_loc="models", crop_forehead=False)
+    # img = cv2.imread("data/media/8.jpg")
 
-    # import numpy as np
-    # img = np.zeros((100,100,5), dtype='float32')
-    bboxes = ob.detect_faces(convert_to_rgb(img), conf_threshold=0.99)
-    cv2.imwrite('data/8.jpg', img)
-    
-    print(bboxes)
-    print(ob)
-    print(img.shape)
-    for bbox in bboxes:
-        cv2.imshow("Test", draw_bounding_box(img, bbox))
-        cv2.waitKey(0)
+    # # import numpy as np
+    # # img = np.zeros((100,100,5), dtype='float32')
+    # bboxes = ob.detect_faces(convert_to_rgb(img), conf_threshold=0.99)
+
+    # for bbox in bboxes:
+    #     cv2.imshow("Test", draw_bounding_box(img, bbox))
+    #     cv2.waitKey(0)
+
+    pass

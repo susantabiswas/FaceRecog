@@ -123,21 +123,13 @@ class FaceDetectorDlib(FaceDetector):
 
 
 if __name__ == "__main__":
-
+    
     # Sample Usage
-    ob = FaceDetectorDlib(model_type="hog")
-    img = cv2.imread("data/sample/2.jpg")
-    print(img.shape)
-    bbox = ob.detect_faces(convert_to_rgb(img))
-    print(bbox)
+    # ob = FaceDetectorDlib(model_type="hog")
+    # img = cv2.imread("data/sample/2.jpg")
+    # print(img.shape)
+    # bbox = ob.detect_faces(convert_to_rgb(img))
+    # print(bbox)
     
     # draw_bounding_box(img, bbox)
-
-    # small_frame = cv2.resize(img, (0, 0), fx=0.5, fy=0.5)
-    # print(small_frame.shape)
-    # bbox1 = ob.detect_faces(convert_to_rgb(small_frame))
-    # print('smaller',bbox1)
-    # draw_bounding_box(small_frame, bbox1[0], color=(255,0,255))
-    # cv2.imshow('Test',small_frame)
-    # cv2.waitKey(0)
-
+    pass

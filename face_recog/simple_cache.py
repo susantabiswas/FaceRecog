@@ -154,24 +154,25 @@ class SimpleCache(InMemoryCache):
 
 if __name__ == "__main__":
 
-    # Save data
-    face_data = {"name": "test3", "encoding": (-3.4, 0.3, -0.823, 1)}
-    ob = SimpleCache(
-        [
-            {"name": "test1", "encoding": (-3.4, 0.3, -0.823, 1)},
-            {"name": "test2", "encoding": (-3.4, 0.3, -0.823, 1)},
-        ]
-    )
-    print(ob.get_all_data())
-    # [{'encoding': (-3.4, 0.3, -0.823, 1), 'name': 'test2'}, {'encoding': (-3.4, 0.3, -0.823, 1), 'name': 'test1'}]
+    # # Save data
+    # face_data = {"name": "test3", "encoding": (-3.4, 0.3, -0.823, 1)}
+    # ob = SimpleCache(
+    #     [
+    #         {"name": "test1", "encoding": (-3.4, 0.3, -0.823, 1)},
+    #         {"name": "test2", "encoding": (-3.4, 0.3, -0.823, 1)},
+    #     ]
+    # )
+    # print(ob.get_all_data())
+    # # [{'encoding': (-3.4, 0.3, -0.823, 1), 'name': 'test2'}, {'encoding': (-3.4, 0.3, -0.823, 1), 'name': 'test1'}]
 
-    ob.add_data(face_data=face_data)
-    print(ob.get_all_data())
-    # print(sorted(ob.get_all_data(), key=lambda x: x['name']))
+    # ob.add_data(face_data=face_data)
+    # print(ob.get_all_data())
+    # # print(sorted(ob.get_all_data(), key=lambda x: x['name']))
 
-    # output
-    # [{'encoding': (-3.4, 0.3, -0.823, 1), 'name': 'test2'}, {'encoding': (-3.4, 0.3, -0.823, 1), 'name': 'test1'}]
-    serialized_data = (("encoding", (-3.4, 0.3, -0.823, 1)), ("name", "test2"))
+    # # output
+    # # [{'encoding': (-3.4, 0.3, -0.823, 1), 'name': 'test2'}, {'encoding': (-3.4, 0.3, -0.823, 1), 'name': 'test1'}]
+    # serialized_data = (("encoding", (-3.4, 0.3, -0.823, 1)), ("name", "test2"))
 
-    ob.delete_data(face_id="test1")
-    print(ob.get_all_data())
+    # ob.delete_data(face_id="test1")
+    # print(ob.get_all_data())
+    pass

@@ -110,34 +110,35 @@ class FaceDataStore:
 
 if __name__ == "__main__":
 
-    print("Saving 1 entry to DataStore...")
-    ob = FaceDataStore(persistent_data_loc="data/test_facial_data.json")
-    # Save data
-    face_data = {"name": "test2", "encoding": (-3.4, 0.3, -0.823, 1)}
-    ob.add_facial_data(face_data)
-    print(ob.get_all_facial_data())
+    # print("Saving 1 entry to DataStore...")
+    # ob = FaceDataStore(persistent_data_loc="data/test_facial_data.json")
+    # # Save data
+    # face_data = {"name": "test2", "encoding": (-3.4, 0.3, -0.823, 1)}
+    # ob.add_facial_data(face_data)
+    # print(ob.get_all_facial_data())
 
-    print("Saving 2 entry to DataStore with existing DB(1 entry)...")
-    # Now we again create a DB and again add the same data
-    # cache will return only 2 entry but DB will have both
-    ob1 = FaceDataStore(persistent_data_loc="data/test_facial_data.json")
-    # Save data
-    face_data1 = {"name": "test1", "encoding": (-3.4, 0.3, -0.823, 1)}
-    face_data2 = {"name": "test2", "encoding": (-3.4, 0.3, -0.823, 1)}
-    ob1.add_facial_data(face_data1)
-    ob1.add_facial_data(face_data2)
+    # print("Saving 2 entry to DataStore with existing DB(1 entry)...")
+    # # Now we again create a DB and again add the same data
+    # # cache will return only 2 entry but DB will have both
+    # ob1 = FaceDataStore(persistent_data_loc="data/test_facial_data.json")
+    # # Save data
+    # face_data1 = {"name": "test1", "encoding": (-3.4, 0.3, -0.823, 1)}
+    # face_data2 = {"name": "test2", "encoding": (-3.4, 0.3, -0.823, 1)}
+    # ob1.add_facial_data(face_data1)
+    # ob1.add_facial_data(face_data2)
 
-    print("DB data", ob1.db_handler.get_all_data())
-    print("Cache data", ob1.cache_handler.get_all_data())
-    print("API data", ob1.get_all_facial_data())
+    # print("DB data", ob1.db_handler.get_all_data())
+    # print("Cache data", ob1.cache_handler.get_all_data())
+    # print("API data", ob1.get_all_facial_data())
 
-    # remove entry
-    print("\n\nAfter Deletion ******")
-    ob1.remove_facial_data(face_id="test2")
-    print("DB data", ob1.db_handler.get_all_data())
-    print("Cache data", ob1.cache_handler.get_all_data())
-    print("API data", ob1.get_all_facial_data())
+    # # remove entry
+    # print("\n\nAfter Deletion ******")
+    # ob1.remove_facial_data(face_id="test2")
+    # print("DB data", ob1.db_handler.get_all_data())
+    # print("Cache data", ob1.cache_handler.get_all_data())
+    # print("API data", ob1.get_all_facial_data())
 
-    # remove the test file
-    os.remove("data/test_facial_data.json")
-    print("File: {} deleted!".format("data/test_facial_data.json"))
+    # # remove the test file
+    # os.remove("data/test_facial_data.json")
+    # print("File: {} deleted!".format("data/test_facial_data.json"))
+    pass

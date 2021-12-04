@@ -1,7 +1,7 @@
 from face_recog.exceptions import ModelFileMissing, InvalidImage
 from face_recog.face_detection_opencv import FaceDetectorOpenCV
-import numpy as np
 import pytest 
+import numpy as np
 
 def test_invalid_image():
     model_loc = "./models"
@@ -10,6 +10,14 @@ def test_invalid_image():
 
     with pytest.raises(InvalidImage):
         ob.detect_faces(img)
+
+
+def test_bbox_outside_img():
+    model_loc = "./models"
+    ob = FaceDetectorOpenCV(model_loc=model_loc)
+    bbox = []
+
+    assert ob.is_valid_bbox([0, 0, 100, 100], 10, 10) == False
 
 
 def test_correct_model_path():

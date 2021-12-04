@@ -152,23 +152,24 @@ class JSONStorage(PersistentStorage):
 if __name__ == "__main__":
     """ Sanity checks """
 
-    ob = JSONStorage(db_loc="data/test_facial_data.json")
-    # Save data
-    face_data1 = {"name": "test1", "encoding": (-3.4, 0.3, -0.823, 1)}
-    face_data2 = {"name": "test2", "encoding": (-3.4, 0.3, -0.823, 1)}
-    face_data3 = {"name": "test3", "encoding": (-3.4, 0.3, -0.823, 1)}
+    # ob = JSONStorage(db_loc="data/test_facial_data.json")
+    # # Save data
+    # face_data1 = {"name": "test1", "encoding": (-3.4, 0.3, -0.823, 1)}
+    # face_data2 = {"name": "test2", "encoding": (-3.4, 0.3, -0.823, 1)}
+    # face_data3 = {"name": "test3", "encoding": (-3.4, 0.3, -0.823, 1)}
 
-    ob.add_data(face_data=face_data1)
-    print(ob.get_all_data())
+    # ob.add_data(face_data=face_data1)
+    # print(ob.get_all_data())
 
-    ob.add_data(face_data=face_data2)
-    print(ob.get_all_data())
+    # ob.add_data(face_data=face_data2)
+    # print(ob.get_all_data())
 
-    # remove data
-    ob.delete_data(face_id="test1")
-    print("Test1 data deleted")
-    print(ob.get_all_data())
+    # # remove data
+    # ob.delete_data(face_id="test1")
+    # print("Test1 data deleted")
+    # print(ob.get_all_data())
 
-    # remove the test file
-    os.remove("data/test_facial_data.json")
-    print("File: {} deleted!".format("data/test_facial_data.json"))
+    # # remove the test file
+    # os.remove("data/test_facial_data.json")
+    # print("File: {} deleted!".format("data/test_facial_data.json"))
+    pass
