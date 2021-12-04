@@ -95,26 +95,6 @@ class FaceDetectorMTCNN(FaceDetector):
 
         return bboxes
 
-    def dlib_face_crop(self, bbox: List[int], shrink_ratio: int = 0.2) -> List[int]:
-        """
-        Crops an image in dlib styled facial ROI.
-        Args:
-            crop_forehead (bool, optional): Whether to trim the
-                forehead in the detected facial ROI. Certain datasets
-                like Dlib models are trained on cropped images without forehead.
-                It can useful in those scenarios.
-                Defaults to True.
-            shrink_ratio (float, optional): Amount of height to shrink
-                Defaults to 0.1.
-
-        Returns:
-            List[List[int]]: List of bounding box coordinates
-        """
-        x1, y1, x2, y2 = bbox
-        h, w = y2 - y1, x2 - x1
-        # Shrink the height of box
-        shift_y = int(shrink_ratio * h)
-        return [x1, y1 + shift_y, x2, y2]
 
     def __repr__(self):
         return "FaceDetectorMTCNN"
