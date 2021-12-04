@@ -1,2 +1,2 @@
 [run]
-omit = video_main.py,tests//*,face_recog//persistent_storage.py,face_recog//in_memory_cache.py,face_recog\media_utils.py
+omit = video_main.py,tests//*,face_recog//persistent_storage.py,face_recog//in_memory_cache.py,face_recog\media_utils.py,face_recog\exceptions.py,face_recog\face_detector.py

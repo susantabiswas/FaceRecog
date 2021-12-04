@@ -285,18 +285,18 @@ class FaceRecognition:
 
 if __name__ == "__main__":
     ############ Sample Usage and Testing ################
-    from face_recog.media_utils import load_image_path
+    # from face_recog.media_utils import load_image_path
 
-    ob = FaceRecognition(
-        model_loc="models",
-        persistent_data_loc="data/facial_data.json",
-        face_detector="dlib",
-    )
-    img1 = load_image_path("data/sample/1.jpg")
-    img2 = load_image_path("data/sample/2.jpg")
-    img3 = load_image_path("data/sample/sagar.jpg")
-    img4 = load_image_path("data/sample/vidit.jpg")
-    img5 = load_image_path("data/sample/sagar2.jpg")
+    # ob = FaceRecognition(
+    #     model_loc="models",
+    #     persistent_data_loc="data/facial_data.json",
+    #     face_detector="dlib",
+    # )
+    # img1 = load_image_path("data/sample/1.jpg")
+    # img2 = load_image_path("data/sample/2.jpg")
+    # img3 = load_image_path("data/sample/sagar.jpg")
+    # img4 = load_image_path("data/sample/vidit.jpg")
+    # img5 = load_image_path("data/sample/sagar2.jpg")
     
     # data1 = ob.register_face(image=img1, name='Keanu')
     # data2 = ob.register_face(image=img2, name='Test2')
@@ -314,3 +314,4 @@ if __name__ == "__main__":
     # print(match['name'] if match and 'name' in match else '', dist)
 
     # os.remove("data/facial_data.json")
+    pass
