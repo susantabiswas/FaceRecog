@@ -207,8 +207,8 @@ class FaceRecognition:
 
         if bboxes is None:
             bboxes = self.face_detector.detect_faces(image=image)
-            if len(bboxes) == 0:
-                raise NoFaceDetected
+        if len(bboxes) == 0:
+            raise NoFaceDetected
         # Load the data of existing registered faces
         # compare using the metric the closest match
         all_facial_data = self.datastore.get_all_facial_data()
