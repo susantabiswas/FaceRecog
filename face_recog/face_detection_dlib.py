@@ -21,7 +21,6 @@ import dlib
 from face_recog.exceptions import InvalidImage, ModelFileMissing
 from face_recog.face_detector import FaceDetector
 from face_recog.logger import LoggerFactory
-from face_recog.media_utils import convert_to_rgb
 from face_recog.validators import is_valid_img
 
 # Load the custom logger

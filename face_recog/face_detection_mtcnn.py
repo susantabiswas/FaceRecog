@@ -16,13 +16,11 @@ Ref: https://github.com/ipazc/mtcnn
 import sys
 from typing import List
 
-import cv2
 from mtcnn import MTCNN
 
 from face_recog.exceptions import InvalidImage
 from face_recog.face_detector import FaceDetector
 from face_recog.logger import LoggerFactory
-from face_recog.media_utils import convert_to_rgb
 from face_recog.validators import is_valid_img
 
 # Load the custom logger

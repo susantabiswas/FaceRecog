@@ -208,7 +208,7 @@ class FaceRecognitionVideo:
 
 
 if __name__ == "__main__":
-    import os
+    # import os
 
     # ob = FaceRecognitionVideo(face_detector='dlib')
     # ob.recognize_face_video(video_path=None,
@@ -246,3 +246,4 @@ if __name__ == "__main__":
     # print('[INFO] Test DB file deleted...')
 
     ###########################################
+    pass

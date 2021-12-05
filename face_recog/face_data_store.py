@@ -22,7 +22,6 @@ Usage: python -m face_recog.face_data_store
 """
 # ===================================================
 
-import os
 import sys
 
 from face_recog.exceptions import DatabaseFileNotFound, InvalidCacheInitializationData
