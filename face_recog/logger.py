@@ -2,7 +2,7 @@
 # ===================================================
 # Author: Susanta Biswas
 # ===================================================
-"""Description: Custom logger factory with a deafult logger
+"""Description: Custom logger factory with a default logger
 mathod to create a logger with file and console stream."""
 # ===================================================
 import logging
@@ -12,7 +12,7 @@ from typing import List
 
 
 class LoggerFactory:
-    """Custom logger factory with a deafult logger
+    """Custom logger factory with a default logger
     method to create a logger with file and console stream.
     """
 
@@ -25,7 +25,7 @@ class LoggerFactory:
         self.logger = self.create_logger(logger_name=logger_name)
 
     def create_formatter(self, format_pattern: str):
-        """Creates a logger formatter with user defined/deafult format.
+        """Creates a logger formatter with user defined/default format.
 
         Args:
             format_pattern (str, optional): Logger message format. Defaults to None.

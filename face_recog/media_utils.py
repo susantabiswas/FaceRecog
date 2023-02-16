@@ -1,3 +1,10 @@
+# ---- coding: utf-8 ----
+# ===================================================
+# Author: Susanta Biswas
+# ===================================================
+"""Description: Utility functions for computer vision algorithms,
+media related operations."""
+# ===================================================
 from typing import List, Tuple
 
 import cv2
