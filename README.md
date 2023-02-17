@@ -1,5 +1,4 @@
-[![HitCount](http://hits.dwyl.io/susantabiswas/FaceRecog.svg)](http://hits.dwyl.io/susantabiswas/FaceRecog)
-[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/susantabiswas/FaceRecog.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/susantabiswas/FaceRecog/context:python)
+[![CodeFactor](https://www.codefactor.io/repository/github/susantabiswas/facerecog/badge)](https://www.codefactor.io/repository/github/susantabiswas/facerecog)
 [![Maintainability](https://api.codeclimate.com/v1/badges/97e039df521b8ecf87c2/maintainability)](https://codeclimate.com/github/susantabiswas/FaceRecog/maintainability)
 ![Tests](https://github.com/susantabiswas/FaceRecog/workflows/Tests/badge.svg)
 [![Build Status](https://travis-ci.com/susantabiswas/FaceRecog.svg?branch=master)](https://travis-ci.com/susantabiswas/FaceRecog)
@@ -15,11 +14,19 @@ At its core, the facial recognition system uses **Siamese Neural network**. Over
 There are 4 different face detectors for usage. Wrappers for video and webcam processing are provided for convenience.<br><br>
 
 ## Table of Contents
+- [Facial Recognition System](#facial-recognition-system)
+  - [Table of Contents](#table-of-contents)
 - [Sample Output](#sample-output)
+  - [Processed Video](#processed-video)
+  - [Processed Images](#processed-images)
 - [Architecture](#architecture)
 - [Setup](#setup)
+    - [Clone the repo and install dependencies.](#clone-the-repo-and-install-dependencies)
+    - [Docker Image](#docker-image)
+    - [Dockerfile](#dockerfile)
 - [Project Structure](#project-structure)
 - [Usage](#usage)
+    - [Face Recognition](#face-recognition)
 - [References](#references)
 
 # Sample Output
