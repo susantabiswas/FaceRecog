@@ -1,4 +1,4 @@
-pytest-cov~=3.0.0
+pytest-cov~=4.0.0
 mtcnn~=0.1.1
 dlib~=19.19.0
 numpy~=1.22.0
