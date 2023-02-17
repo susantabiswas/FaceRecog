@@ -38,3 +38,11 @@ jobs:
     - name: Codecov
       uses: codecov/codecov-action@v3.1.1
 
+    - name: Ponicode Unit Test
+      uses: ponicode/unit-testing-action@0.2.1
+
+    - name: Ponicode SQUAR
+      uses: ponicode/squar_action@0.1.2
+
+
+
