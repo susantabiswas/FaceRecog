@@ -1,3 +1,4 @@
+[![CodeQL](https://github.com/susantabiswas/FaceRecog/actions/workflows/codeql.yml/badge.svg)](https://github.com/susantabiswas/FaceRecog/actions/workflows/codeql.yml)
 [![CodeFactor](https://www.codefactor.io/repository/github/susantabiswas/facerecog/badge)](https://www.codefactor.io/repository/github/susantabiswas/facerecog)
 [![Maintainability](https://api.codeclimate.com/v1/badges/97e039df521b8ecf87c2/maintainability)](https://codeclimate.com/github/susantabiswas/FaceRecog/maintainability)
 ![Tests](https://github.com/susantabiswas/FaceRecog/workflows/Tests/badge.svg)
