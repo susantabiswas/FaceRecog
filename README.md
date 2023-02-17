@@ -3,7 +3,6 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/97e039df521b8ecf87c2/maintainability)](https://codeclimate.com/github/susantabiswas/FaceRecog/maintainability)
 ![Tests](https://github.com/susantabiswas/FaceRecog/workflows/Tests/badge.svg)
 [![Build Status](https://travis-ci.com/susantabiswas/FaceRecog.svg?branch=master)](https://travis-ci.com/susantabiswas/FaceRecog)
-[![codecov](https://codecov.io/gh/susantabiswas/FaceRecog/branch/master/graph/badge.svg?token=CW7OR72KCW)](https://codecov.io/gh/susantabiswas/FaceRecog)
 
 
 
