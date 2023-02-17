@@ -1,6 +1,6 @@
 pytest-cov
-mtcnn
-dlib
-numpy
-opencv_python
-tensorflow
+mtcnn~=0.1.1
+dlib~=19.24.0 
+numpy~=1.24.2
+opencv_python~=4.7.0.68
+tensorflow~=2.11.0
